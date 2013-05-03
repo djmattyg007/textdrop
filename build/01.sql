@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 	`displayname` VARCHAR(32) NOT NULL,
 	`password` CHAR(32) NOT NULL,
 	`active` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+	`permission` TINYINT UNSIGNED NOT NULL DEFAULT 1,
 	`api_key` CHAR(40) NOT NULL
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
