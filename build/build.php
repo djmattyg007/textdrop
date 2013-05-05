@@ -1,35 +1,32 @@
 <?php
+
 if (php_sapi_name() !== "cli") {
-	echo "No public access allowed.\n";
+	exit("No public access allowed.\n");
 }
 if (!isset($argv) || empty($argv) || count($argv) > 2 || !isset($argv[1]) || !is_numeric($argv[1])) {
-	echo "Improper parameters supplied.\n";
+	exit("Improper parameters supplied.\n");
 }
 $id = $argv[1];
 
-require("../config.php");
-require("../connection.php");
-
-try {
-	if (!PDO::beginTransaction()) {
-		echo "Cannot create transaction. Aborting.\n";
-		die;
-	}
-} catch (PDOExcetion $e) {
-	echo "PDO Exception.\n";
-	echo $e->getMessage() . "\n";
-	die;
-}
+require(".." . DIRECTORY_SEPARATOR . "config.php");
+require(".." . DIRECTORY_SEPARATOR . "connection.php");
 
 try {
 	if (!file_exists($id . ".sql")) {
-		echo "Cannot find specified build script.\n";
-		die;
+		exit("Cannot find specified build script.\n");
 	}
 	$BUILD_STMT = file_get_contents($id . ".sql");
 } catch (Exception $e) {
-	echo "Unable to open specified build script.\n";
-	die;
+	exit("Unable to open specified build script.\n");
+}
+
+die; //TODO: do not perform any database operations until we actually have a way to complete the transaction
+try {
+	if (!PDO::beginTransaction()) {
+		exit("Cannot create database transaction. Aborting.\n");
+	}
+} catch (PDOExcetion $e) {
+	exit("PDO Exception.\n" . $e->getMessage() . "\n";
 }
 
 echo "Running build script $id\n";
@@ -41,3 +38,4 @@ try {
 	die;
 }
 echo "Finished build script $id\n";
+
