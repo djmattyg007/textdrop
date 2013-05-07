@@ -1,5 +1,7 @@
 <?php
 
+$CONFIG = array();
+
 $CONFIG["APP_NAME"] = "TextDrop";
 
 $CONFIG["DB_HOST"] = "";
