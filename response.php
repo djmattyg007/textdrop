@@ -40,6 +40,6 @@ function respond($statusCode, $successful, $message, $payload = NULL) {
 }
 
 function respondFatal() {
-	respond(500, false, "Fatal internal error.");
+	respond(500, false, "A fatal internal error occurred.");
 }
 
