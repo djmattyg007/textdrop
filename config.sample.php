@@ -7,3 +7,9 @@ $CONFIG["DB_NAME"] = "";
 $CONFIG["DB_USER"] = "";
 $CONFIG["DB_PASS"] = "";
 
+date_default_timezone_set("UTC");
+
+// Enter a value in minutes
+$CONFIG["API_SESSION_LENGTH"] = "5";
+
+srand(time());
