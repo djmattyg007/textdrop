@@ -1,27 +1,29 @@
 <?php
 
 function respond($statusCode, $successful, $message, $payload = NULL) {
+	//TODO: error-check the MODE constant
+
 	// Error check the provided variables.
 	if (!is_int($statusCode)) {
-		respond_fatal();
+		respondFatal();
 	} else if ($statusCode < 100 || >= 600) {
 		// There aren't any HTTP status codes outside of these bounds.
-		respond_fatal();
+		respondFatal();
 	}
 	if (!is_bool($successful) {
-		respond_fatal();
+		respondFatal();
 	}
 	// The payload must be an array.
 	if ($payload === NULL) {
 		$payload = array();
 	} else {
 		if (!is_array($payload)) {
-			respond_fatal();
+			respondFatal();
 		}
 	}
 	// Do not allow overwriting of status parameters.
 	if (isset($payload["status"]) || isset($payload["successful"]) || isset($payload["message"])) {
-		respond_fatal();
+		respondFatal();
 	}
 
 	http_response_code($statusCode);
@@ -37,7 +39,7 @@ function respond($statusCode, $successful, $message, $payload = NULL) {
 	exit($response);
 }
 
-function respond_fatal() {
-	respond(500, false, "Fatal error.");
+function respondFatal() {
+	respond(500, false, "Fatal internal error.");
 }
 
