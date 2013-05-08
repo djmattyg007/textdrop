@@ -70,7 +70,15 @@ function session_login() {
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
 	// Therefore, create a session for the user as requested.
 	try {
-		//TODO: transaction
+		if (!PDO::beginTransaction()) {
+			respond(500, false, "Unidentified database error.");
+		}
+	} catch (PDOExcetion $e) {
+		//TODO: examine code & message in exception
+		respond(500, false, "Unidentified database error.");
+	}
+
+	try {
 		$statement = $db->prepare("INSERT INTO `sessions` (`owner`, `key`, `expiry`, `token`) VALUES (?, ?, ?, ?)");
 		$statement->bindParam(1, $userID, PDO::PARAM_INT);
 		$statement->bindParam(2, $findKey, PDO::PARAM_INT);
