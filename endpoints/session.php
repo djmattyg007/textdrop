@@ -92,4 +92,21 @@ function session_login() {
 		$db->rollBack();
 		respond(500, false, "Unidentified database error.");
 	}
+
+	try {
+		if (!$db->commit()) {
+			$db->rollBack();
+			respond(503, false, "Unable to create new session.");
+		}
+	} catch (PDOException $e) {
+		//TODO: examine code & message in exception
+		$db->rollBack();
+		respond(500, false, "Unidentified database error.");
+	}
+
+	$response = array();
+	$response["session"] = array();
+	$response["session"]["expiryTime"] = $expiryTime;
+	$response["session"]["token"] = $sessionToken;
+	respond(200, true, "Session created successfully.", $response);
 }
