@@ -22,7 +22,7 @@ try {
 
 die; //TODO: do not perform any database operations until we actually have a way to complete the transaction
 try {
-	if (!PDO::beginTransaction()) {
+	if (!$db->beginTransaction()) {
 		exit("Cannot create database transaction. Aborting.\n");
 	}
 } catch (PDOExcetion $e) {
