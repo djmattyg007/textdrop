@@ -26,17 +26,28 @@ function respond($statusCode, $successful, $message, $payload = NULL) {
 		respondFatal();
 	}
 
+	$response = array();
+	$response["response"] = array();
+	$response["response"]["status"] = $statusCode;
+	$response["response"]["successful"] = $successful;
+	$response["response"]["message"] = $message;
+	$response["response"]["createdAt"] = date("Y-m-d H:i:s", time());
+	$response["payload"] = $payload;
+
 	http_response_code($statusCode);
 
-	$response = "";
+	$responseMsg = "";
 	if (MODE === "API") {
-		$response .= json_encode(array_merge(array("status" => $statusCode, "successful" => $successful, "message" => $message), $payload));
+		$responseMsg .= json_encode($response);
 	} else if (MODE === "WEB") {
-		$response .= "<h2>Status: $statusCode</h2>\n<h2>Success: $successful</h2>\n<h2>Message:</h2><h3>$message</h3>\n\n";
-		$response .= "Payload:\n<pre>" . $print_r($payload, true) . "</pre>";
+		$responseMsg .= "<h2>Status: " . $response["response"]["status"] . "</h2>\n";
+		$responseMsg .= "<h2>Success: " . $response["response"]["successful"] . "</h2>\n";
+		$responseMsg .= "<h2>Created at: " . $response["response"]["createdAt"] . "</h2>\n";
+		$responseMsg .= "<h2>Message:</h2><h3>" . $response["response"]["message"] . "</h3>\n\n";
+		$responseMsg .= "Payload:\n<pre>" . $print_r($response["payload"], true) . "</pre>";
 	}
 
-	exit($response);
+	exit($responseMsg);
 }
 
 function respondFatal() {
