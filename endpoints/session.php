@@ -2,10 +2,12 @@
 
 $methodRegistry["session_login"] = false;
 function session_login() {
+	// The client quite obviously can't authenticate without a username or password.
 	if (!isset($_POST["username"]) || !isset($_POST["password"])) {
 		respond(401, false, "There was no username or password supplied with the request.");
 	}
-	
+
+	// Check to see if the username and password exist and match.
 	try {
 		$statement = $db->prepare("SELECT user_id, active FROM users WHERE username = ? AND password = ?");
 		$statement->bindParam(1, $_POST["username"], PDO::PARAM_STR);
@@ -18,6 +20,7 @@ function session_login() {
 		respond(500, false, "Unidentified database error.");
 	}
 
+	// Make sure the user exists and is active.
 	if (isset($user_detail["user_id"]) && isset($user_detail["active"]) && $user_detail["active"] === 1) {
 		$userID = $user_detail["user_id"];
 		unset($user_detail);
@@ -26,6 +29,7 @@ function session_login() {
 		respond(401, false, "Incorrect username or password.");
 	}
 
+	// Grab the user's API keys from the database.
 	try {
 		$statement = $db->prepare("SELECT id, key, active FROM api_keys WHERE owner = ?");
 		$statement->bindParam(1, $userID, PDO::PARAM_INT);
@@ -37,10 +41,13 @@ function session_login() {
 		respond(500, false, "Unidentified database error.");
 	}
 
+	// No keys were found.
 	if (count($keys) == 0) {
 		// Do not inform the client there are no API keys for the user.
 		respond(401, false, "Invalid API key.");
 	}
+	// Cycle through all of the keys returned from the database to find one that matches
+	// the supplied key.
 	$findKey = NULL;
 	foreach ($keys as $key) {
 		if ($key["key"] === $_SERVER["HTTP_X_API_KEY"]) {
@@ -53,6 +60,7 @@ function session_login() {
 			}
 		}
 	}
+	// No active keys matched the supplied key.
 	if (!$findKey) {
 		// No matching API keys were found for that user.
 		respond(401, false, "Invalid API key.");
