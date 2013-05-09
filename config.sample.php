@@ -11,7 +11,8 @@ $CONFIG["DB_PASS"] = "";
 
 date_default_timezone_set("UTC");
 
-// Enter a value in minutes
-$CONFIG["API_SESSION_LENGTH"] = "5";
+// Enter values in minutes
+$CONFIG["API_SESSION_LENGTH"] = 5;
+$CONFIG["API_REQUEST_TIMEOUT"] = 2;
 
 srand(time());
