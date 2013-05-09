@@ -15,13 +15,17 @@ if (empty($_SERVER["HTTP_X_API_KEY"])) {
 	respond(400, false, "There was no API key supplied with the request.");
 }
 
-//TODO: Check for created at time
 if (empty($_POST["createdAt"]) {
 	respond(400, false, "Unable to ascertain when the request was generated.");
 }
 
 // Setup site configuration.
 require("config.php");
+
+// Do not accept requests made over two minutes ago.
+if (!checkRequestTimeout($_POST["createdAt"]) {
+	respond(?, false, "Your request timed out. Please check the time on your device.");
+}
 
 // Start routing.
 $request = explode("/", $_GET["q"]); // Break down request URI.

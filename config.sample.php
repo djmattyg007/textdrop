@@ -16,3 +16,14 @@ $CONFIG["API_SESSION_LENGTH"] = 5;
 $CONFIG["API_REQUEST_TIMEOUT"] = 2;
 
 srand(time());
+
+function checkRequestTimeout($requestTime)
+{
+	$timeout = strtotime($requestTime) + ($CONFIG["API_REQUEST_TIMEOUT"] * 60);
+	if ($timeout > $time()) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
