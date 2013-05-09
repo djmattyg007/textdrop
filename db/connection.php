@@ -10,7 +10,8 @@ try {
 	respond(503, false, "Unable to connect to database.");
 }
 
-function verifySession() {
+function verifySession()
+{
 	//TODO: actually write the code
 	return NULL;
 	respond(401, false, "Unable to verify session token.");

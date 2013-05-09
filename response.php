@@ -1,8 +1,7 @@
 <?php
 
-function respond($statusCode, $successful, $message, $payload = NULL) {
-	//TODO: error-check the MODE constant
-
+function respond($statusCode, $successful, $message, $payload = NULL)
+{
 	// Error check the provided variables.
 	if (!is_int($statusCode)) {
 		respondFatal();
@@ -50,7 +49,8 @@ function respond($statusCode, $successful, $message, $payload = NULL) {
 	exit($responseMsg);
 }
 
-function respondFatal() {
+function respondFatal()
+{
 	respond(500, false, "A fatal internal error occurred.");
 }
 
