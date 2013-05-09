@@ -3,7 +3,7 @@ if (!defined(MODE)) {
 	exit("No direct script access allowed.");
 }
 
-function respond($statusCode, $successful, $message, $payload = NULL)
+function respond($statusCode, $successful, $message, $payload = null)
 {
 	// Error check the provided variables.
 	if (!is_int($statusCode)) {
@@ -16,7 +16,7 @@ function respond($statusCode, $successful, $message, $payload = NULL)
 		respondFatal();
 	}
 	// The payload must be an array.
-	if ($payload === NULL) {
+	if ($payload === null) {
 		$payload = array();
 	} else {
 		if (!is_array($payload)) {

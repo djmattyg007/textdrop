@@ -16,6 +16,6 @@ try {
 function verifySession()
 {
 	//TODO: actually write the code
-	return NULL;
+	return null;
 	respond(401, false, "Unable to verify session token.");
 }
