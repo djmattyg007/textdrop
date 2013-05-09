@@ -3,6 +3,7 @@
 if (php_sapi_name() !== "cli") {
 	exit("No public access allowed.\n");
 }
+define("MODE", "CLI");
 if (!isset($argv) || empty($argv) || count($argv) > 2 || !isset($argv[1]) || !is_numeric($argv[1])) {
 	exit("Improper parameters supplied.\n");
 }
