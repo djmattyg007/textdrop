@@ -9,7 +9,7 @@ if (!isset($argv) || empty($argv) || count($argv) > 2 || !isset($argv[1]) || !is
 $id = $argv[1];
 
 require(".." . DIRECTORY_SEPARATOR . "config.php");
-require(".." . DIRECTORY_SEPARATOR . "connection.php");
+require(".." . DIRECTORY_SEPARATOR . "db" . DIRECTORY_SEPARATOR . "connection.php");
 
 try {
 	if (!file_exists($id . ".sql")) {
