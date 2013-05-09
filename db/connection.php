@@ -1,6 +1,6 @@
 <?php
 
-if (!isset($CONFIG) || empty($CONFIG) || !isset($CONFIG["DB_HOST"]) || !isset($CONFIG["DB_NAME"]) || !isset($CONFIG["DB_USER"]) || !isset($CONFIG["DB_PASS"])) {
+if (empty($CONFIG) || empty($CONFIG["DB_HOST"]) || empty($CONFIG["DB_NAME"]) || empty($CONFIG["DB_USER"]) || empty($CONFIG["DB_PASS"])) {
 	respond(503, false, "Unable to connect to database.");
 }
 
