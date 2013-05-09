@@ -1,4 +1,7 @@
 <?php
+if (!defined(MODE)) {
+	exit("No direct script access allowed.");
+}
 
 $methodRegistry["session_login"] = false;
 //TODO: check for number of active sessions per api key
