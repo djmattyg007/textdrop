@@ -1,4 +1,7 @@
 <?php
+if (!defined(MODE)) {
+	exit("No direct script access allowed.");
+}
 
 $CONFIG = array();
 
