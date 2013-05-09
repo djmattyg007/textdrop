@@ -11,11 +11,14 @@ if (!isset($_GET["q"])) {
 }
 
 // If no API key was supplied, no further processing should be done.
-if (!isset($_SERVER["HTTP_X_API_KEY"])) {
+if (empty($_SERVER["HTTP_X_API_KEY"])) {
 	respond(400, false, "There was no API key supplied with the request.");
 }
 
 //TODO: Check for created at time
+if (empty($_POST["createdAt"]) {
+	respond(400, false, "Unable to ascertain when the request was generated.");
+}
 
 // Setup site configuration.
 require("config.php");
