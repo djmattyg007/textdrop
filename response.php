@@ -23,10 +23,6 @@ function respond($statusCode, $successful, $message, $payload = NULL)
 			respondFatal();
 		}
 	}
-	// Do not allow overwriting of status parameters.
-	if (isset($payload["status"]) || isset($payload["successful"]) || isset($payload["message"])) {
-		respondFatal();
-	}
 
 	$response = array();
 	$response["response"] = array();
