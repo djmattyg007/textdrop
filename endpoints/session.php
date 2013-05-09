@@ -1,7 +1,10 @@
 <?php
 
 $methodRegistry["session_login"] = false;
-function session_login() {
+//TODO: check for number of active sessions per api key
+//TODO: record log of transactions
+function session_login()
+{
 	// The client quite obviously can't authenticate without a username or password.
 	if (!isset($_POST["username"]) || !isset($_POST["password"])) {
 		respond(401, false, "There was no username or password supplied with the request.");
