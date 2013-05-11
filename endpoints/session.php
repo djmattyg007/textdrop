@@ -101,9 +101,8 @@ function session_login()
 	}
 
 	try {
-		$statement = $db->prepare("UPDATE users SET lastLogin = ? WHERE userID = ?");
-		$statement->bindParam(1, date("Y-m-d H:i:s", time()), PDO::PARAM_STR);
-		$statement->bindParam(2, $userID, PDO::PARAM_INT);
+		$statement = $db->prepare("UPDATE users SET lastLogin = UTC_TIMESTAMP() WHERE userID = ?");
+		$statement->bindParam(1, $userID, PDO::PARAM_INT);
 		$statement->execute();
 		unset($statement);
 	} catch (PDOException $e) {

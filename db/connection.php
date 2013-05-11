@@ -38,7 +38,7 @@ function verifySession()
 	}
 
 	try {
-		$statement = $db->prepare("UPDATE sessions SET expiry = ? WHERE token = ?");
+		$statement = $db->prepare("UPDATE sessions SET expiry = ?, totalRequests = totalRequests + 1 WHERE token = ?");
 		$statement->bindParam(1, $_POST["createdAt"], PDO::PARAM_STR);
 		$statement->bindParam(2, $_POST["token"], PDO::PARAM_STR);
 		$statement->execute();
