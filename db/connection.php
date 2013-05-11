@@ -38,12 +38,32 @@ function verifySession()
 	}
 
 	try {
+		if (!$db->beginTransaction()) {
+			respond(503, false, "Unable to verify session token.");
+		}
+	} catch (PDOException $e) {
+		//TODO: examine code & message in exception
+		respond(500, false, "Unidentified database error.");
+	}
+
+	try {
 		$statement = $db->prepare("UPDATE sessions SET expiry = ?, totalRequests = totalRequests + 1 WHERE token = ?");
 		$statement->bindParam(1, $_POST["createdAt"], PDO::PARAM_STR);
 		$statement->bindParam(2, $_POST["token"], PDO::PARAM_STR);
 		$statement->execute();
 		unset($statement);
 	} catch (PDOException $e) {
+		respond(500, false, "Unidentified database error.");
+	}
+
+	try {
+		if (!$db->commit()) {
+			$db->rollBack();
+			respond(503, false, "Unable to verify session token.");
+		}
+	} catch (PDOException $e) {
+		//TODO: examine code & message in exception
+		$db->rollBack();
 		respond(500, false, "Unidentified database error.");
 	}
 	return true;
