@@ -70,3 +70,35 @@ function verifySession()
 	respond(401, false, "Unable to verify session token.");
 }
 
+function cleanSessions()
+{
+	try {
+		if (!$db->beginTransaction()) {
+			respond(503, false, "Unidentified database error.");
+		}
+	} catch (PDOException $e) {
+		//TODO: examine code & message in exception
+		respond(500, false, "Unidentified database error.");
+	}
+
+	try {
+		$statement = $db->prepare("DELETE FROM sessions WHERE expiry < UTC_TIMESTAMP()");
+		$statement->execute();
+		unset($statement);
+	} catch (PDOException $e) {
+		//TODO: examine code & message in exception
+		respond(500, false, "Unidentified database error.");
+	}
+
+	try {
+		if (!$db->commit()) {
+			$db->rollBack();
+			respond(503, false, "Unidentified database error.");
+		}
+	} catch (PDOException $e) {
+		//TODO: examine code & message in exception
+		$db->rollBack();
+		respond(500, false, "Unidentified database error.");
+	}
+}
+

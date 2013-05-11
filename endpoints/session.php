@@ -74,6 +74,10 @@ function session_login()
 	}
 	unset($keys);
 
+	// Check to see if the user already has any existing sessions.
+	// First, clean up old ones.
+	cleanSessions();
+
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
 	// Therefore, create a session for the user as requested.
 	try {
