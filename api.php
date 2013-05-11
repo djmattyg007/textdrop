@@ -1,4 +1,5 @@
 <?php
+//TODO: consider abstracting the creation and committing of DB transactions
 
 define("MODE", "API");
 
