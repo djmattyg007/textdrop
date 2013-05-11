@@ -24,6 +24,7 @@ require("config.php");
 
 // Do not accept requests made over two minutes ago.
 if (!checkRequestTimeout($_POST["createdAt"]) {
+	//TODO: check error code
 	respond(?, false, "Your request timed out. Please check the time on your device.");
 }
 
