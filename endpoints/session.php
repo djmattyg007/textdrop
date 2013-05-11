@@ -100,7 +100,17 @@ function session_login()
 		respond(500, false, "Unidentified database error.");
 	}
 
-	//TODO: update last login time
+	try {
+		$statement = $db->prepare("UPDATE users SET lastLogin = ? WHERE userID = ?");
+		$statement->bindParam(1, date("Y-m-d H:i:s", time()), PDO::PARAM_STR);
+		$statement->bindParam(2, $userID, PDO::PARAM_INT);
+		$statement->execute();
+		unset($statement);
+	} catch (PDOException $e) {
+		//TODO: examine code & message in exception
+		$db->rollBack();
+		respond(500, false, "Unidentified database error.");
+	}
 
 	try {
 		if (!$db->commit()) {
