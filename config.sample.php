@@ -6,6 +6,8 @@ if (!defined(MODE)) {
 $CONFIG = array();
 
 $CONFIG["APP_NAME"] = "TextDrop";
+$CONFIG["LOG_ACCESS"] = "";
+$CONFIG["LOG_ERROR"] = "";
 
 $CONFIG["DB_HOST"] = "";
 $CONFIG["DB_NAME"] = "";
