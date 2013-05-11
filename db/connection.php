@@ -27,16 +27,14 @@ function verifySession()
 	}
 
 	if (empty($session)) {
-		//TODO: check error code
-		respond(400, false, "Session does not exist.");
+		respond(401, false, "Session does not exist.");
 	}
 	if ($session["key"] !== $_SERVER["HTTP_X_API_KEY"]) {
-		respond(400, false, "Session token and API key do not match.");
+		respond(401, false, "Session token and API key do not match.");
 	}
 	if (strtotime($_POST["createdAt"]) > strtotime($session["expiry"])) {
 		cleanSessions();
-		//TODO: check error code
-		respond(401, false, "Session has expired.");
+		respond(401, false, "Session has expired. Please reauthenticate.");
 	}
 
 	try {
@@ -44,6 +42,7 @@ function verifySession()
 		$statement->bindParam(1, $_POST["createdAt"], PDO::PARAM_STR);
 		$statement->bindParam(2, $_POST["token"], PDO::PARAM_STR);
 		$statement->execute();
+		unset($statement);
 	} catch (PDOException $e) {
 		respond(500, false, "Unidentified database error.");
 	}
