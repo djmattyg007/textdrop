@@ -16,7 +16,7 @@ function session_login()
 
 	// Check to see if the username and password exist and match.
 	try {
-		$statement = $db->prepare("SELECT user_id, active FROM users WHERE username = ? AND password = ?");
+		$statement = $db->prepare("SELECT userID, active FROM users WHERE username = ? AND password = ?");
 		$statement->bindParam(1, $_POST["username"], PDO::PARAM_STR);
 		$statement->bindParam(2, $_POST["password"], PDO::PARAM_STR);
 		$statement->execute();
@@ -28,8 +28,8 @@ function session_login()
 	}
 
 	// Make sure the user exists and is active.
-	if (isset($user_detail["user_id"]) && isset($user_detail["active"]) && $user_detail["active"] === 1) {
-		$userID = $user_detail["user_id"];
+	if (isset($user_detail["userID"]) && isset($user_detail["active"]) && $user_detail["active"] === 1) {
+		$userID = $user_detail["userID"];
 		unset($user_detail);
 	} else {
 		// Do not inform the client the selected user may be inactive.
@@ -98,6 +98,8 @@ function session_login()
 		$db->rollBack();
 		respond(500, false, "Unidentified database error.");
 	}
+
+	//TODO: update last login time
 
 	try {
 		if (!$db->commit()) {
