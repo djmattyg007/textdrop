@@ -88,8 +88,7 @@ function session_login()
 	$expiryTime = date("Y-m-d H:i:s", time() + 300);
 	$sessionToken = sha1(md5("$userId" . time() . "$findKey" . rand()));
 	try {
-		$statement = $db->prepare("INSERT INTO `sessions` (`owner`, `key`, `expiry`, `token`) VALUES (?, ?, ?, ?)");
-		$statement->bindParam(1, $userID, PDO::PARAM_INT);
+		$statement = $db->prepare("INSERT INTO `sessions` (`key`, `expiry`, `token`) VALUES (?, ?, ?)");
 		$statement->bindParam(2, $findKey, PDO::PARAM_INT);
 		$statement->bindParam(3, $expiryTime, PDO::PARAM_STR);
 		$statement->bindParam(4, $sessionToken, PDO::PARAM_STR);
