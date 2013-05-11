@@ -6,6 +6,7 @@ if (!defined(MODE)) {
 $methodRegistry["session_login"] = false;
 //TODO: check for number of active sessions per api key
 //TODO: record log of transactions
+//TODO: create access and error logs
 function session_login()
 {
 	// The client quite obviously can't authenticate without a username or password.
