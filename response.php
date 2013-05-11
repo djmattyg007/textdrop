@@ -34,6 +34,7 @@ function respond($statusCode, $successful, $message, $payload = null)
 
 	http_response_code($statusCode);
 
+	//TODO: set content-type HTTP header
 	$responseMsg = "";
 	if (MODE === "API") {
 		$responseMsg .= json_encode($response);
