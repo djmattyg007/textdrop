@@ -26,9 +26,9 @@ function checkRequestTimeout($requestTime)
 {
 	$timeout = strtotime($requestTime) + ($CONFIG["API_REQUEST_TIMEOUT"] * 60);
 	if ($timeout > $time()) {
-		return true;
+		return true; // Request has not timed out.
 	} else {
-		return false;
+		return false; // Request has timed out.
 	}
 }
 
