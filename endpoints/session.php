@@ -84,7 +84,7 @@ function session_login()
 		if (!$db->beginTransaction()) {
 			respond(503, false, "Unable to create new session.");
 		}
-	} catch (PDOExcetion $e) {
+	} catch (PDOException $e) {
 		//TODO: examine code & message in exception
 		respond(500, false, "Unidentified database error.");
 	}

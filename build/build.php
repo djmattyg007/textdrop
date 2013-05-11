@@ -25,7 +25,7 @@ try {
 	if (!$db->beginTransaction()) {
 		exit("Cannot create database transaction. Aborting.\n");
 	}
-} catch (PDOExcetion $e) {
+} catch (PDOException $e) {
 	exit("PDO Exception.\n" . $e->getMessage() . "\n";
 }
 
