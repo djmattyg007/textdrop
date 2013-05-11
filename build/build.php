@@ -21,7 +21,6 @@ try {
 	exit("Unable to open specified build script.\n");
 }
 
-die; //TODO: do not perform any database operations until we actually have a way to complete the transaction
 try {
 	if (!$db->beginTransaction()) {
 		exit("Cannot create database transaction. Aborting.\n");
@@ -34,9 +33,19 @@ echo "Running build script $id\n";
 try {
 	$query = $db->query($BUILD_STMT);
 } catch (PDOException $e) {
-	echo "Error running build script.\n";
-	echo $e->getMessage();
-	die;
+	$db->rollBack();
+	exit("Error running build script.\n" . $e->getMessage() . "\n";
+}
+
+try {
+	if (!$db->commit()) {
+		$db->rollBack();
+		exit("Error while attempting to commit results of build script.\n");
+	}
+} catch (PDOException $e) {
+	//TODO: examine code & message in exception
+	$db->rollBack();
+	exit("PDO Exception.\n" . $e->getMessage() . "\n";
 }
 echo "Finished build script $id\n";
 
