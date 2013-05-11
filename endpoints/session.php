@@ -20,7 +20,7 @@ function session_login()
 		$statement->bindParam(1, $_POST["username"], PDO::PARAM_STR);
 		$statement->bindParam(2, $_POST["password"], PDO::PARAM_STR);
 		$statement->execute();
-		$user_detail = $statement->fetch(PDO::FETCH_BOTH);
+		$userDetail = $statement->fetch(PDO::FETCH_BOTH);
 		unset($statement);
 	} catch (PDOException $e) {
 		//TODO: examine code & message in exception
@@ -28,9 +28,9 @@ function session_login()
 	}
 
 	// Make sure the user exists and is active.
-	if (isset($user_detail["userID"]) && isset($user_detail["active"]) && $user_detail["active"] === 1) {
-		$userID = $user_detail["userID"];
-		unset($user_detail);
+	if (isset($userDetail["userID"]) && isset($userDetail["active"]) && $userDetail["active"] === 1) {
+		$userID = $userDetail["userID"];
+		unset($userDetail);
 	} else {
 		// Do not inform the client the selected user may be inactive.
 		respond(401, false, "Incorrect username or password.");
@@ -89,10 +89,11 @@ function session_login()
 	$sessionToken = sha1(md5("$userId" . time() . "$findKey" . rand()));
 	try {
 		$statement = $db->prepare("INSERT INTO `sessions` (`key`, `expiry`, `token`) VALUES (?, ?, ?)");
-		$statement->bindParam(2, $findKey, PDO::PARAM_INT);
-		$statement->bindParam(3, $expiryTime, PDO::PARAM_STR);
-		$statement->bindParam(4, $sessionToken, PDO::PARAM_STR);
+		$statement->bindParam(1, $findKey, PDO::PARAM_INT);
+		$statement->bindParam(2, $expiryTime, PDO::PARAM_STR);
+		$statement->bindParam(3, $sessionToken, PDO::PARAM_STR);
 		$statement->execute();
+		unset($statement);
 	} catch (PDOException $e) {
 		//TODO: examine code & message in exception
 		$db->rollBack();
