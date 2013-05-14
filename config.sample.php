@@ -1,5 +1,5 @@
 <?php
-if (!defined(MODE)) {
+if (!defined("MODE")) {
 	exit("No direct script access allowed.");
 }
 
