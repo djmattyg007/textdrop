@@ -118,6 +118,7 @@ function logRotate($logType)
 		}
 	}
 
+	//TODO: look at compression wrappers. could have done this wrong :(
 	$newLogName = $logFile . ".2.gz";
 	$curLogFile = fopen($logFile, "rb");
 	$curLogGZ = fopen($newLogName, "wb");
