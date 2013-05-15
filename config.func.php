@@ -38,9 +38,14 @@ if (!is_numeric($CONFIG["LOG_MAX"]) || $CONFIG["LOG_MAX"] < 1) {
 	exit(1);
 }
 
-// Do not put a new line at the end of the description.
-// The logRequestTime should be the server time, not the time included in a request.
-// The statusCode variable should match what is sent to the client.
+
+/* config-related functions */
+
+/**
+ * Do not put a new line at the end of the description.
+ * The logRequestTime should be the server time, not the time included in a request.
+ * The statusCode variable should match what is sent to the client.
+ */
 function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 {
 	$type = "LOG_" . strtoupper($logType);
@@ -73,7 +78,7 @@ function logRotate($logType)
 	// Check the size of the current log file.
 	// If it is above the maximum size allowed for a log, we need to rotate it.
 	$logFileSize = filesize($logFile);
-	$maxLogFileSize = 5242880; // Default maximum size allowed for a log.
+	$maxLogFileSize = 5242880; // Default maximum size (in Bytes) allowed for a log.
 	if (!empty($CONFIG["LOG_SIZE"]) && is_numeric($CONFIG["LOG_SIZE"])) {
 		$maxLogFileSize = $CONFIG["LOG_SIZE"] * 1024 * 1024;
 	}
