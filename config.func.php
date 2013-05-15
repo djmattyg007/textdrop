@@ -104,10 +104,31 @@ function logRotate($logType)
 			}
 		}
 	}
-	rename($logFile, $logFile . ".2");
-	//compress log!
-	file_put_contents($logFile, "");
+
+	$newLogName = $logFile . ".2.gz";
+	$curLogFile = fopen($logFile, "rb");
+	$curLogGZ = fopen($newLogName, "wb");
+	if (!($curLogFile && $curLogGZ)) {
+		goto logerror;
+	}
+	if (!$encodedLog = gzencode(fread($curLogFile, filesize($logFile)))) {
+		goto logerror;
+	}
+	if (-1 == fwrite($curLogGZ, $encodedLog)) {
+		goto logerror;
+	}
+	fclose($curLogGZ);
+	fclose($curLogFile);
+	unlink($logFile); // Delete old log.
+	file_put_contents($logFile, ""); // Create new current log file.
 	return;
+
+	logerror:
+	if (MODE == "CLI") {
+		echo "Critical log file rotation error.";
+	}
+	exit(1);
+	//TODO: think of a better strategy then simply exiting if we can't rotate logs...
 }
 
 function checkRequestTimeout($requestTime)
