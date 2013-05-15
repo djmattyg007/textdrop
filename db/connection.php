@@ -10,7 +10,7 @@ if (empty($CONFIG) || empty($CONFIG["DB_HOST"]) || empty($CONFIG["DB_NAME"]) || 
 try {
 	$db = new PDO('mysql:host=' . $CONFIG["DB_HOST"] . ';dbname=' . $CONFIG["DB_NAME"], $CONFIG["DB_USER"], $CONFIG["DB_PASS"]);
 } catch (PDOException $e) {
-	respond(503, false, "Unable to connect to database.");
+	respond(503, false, "Unable to create database connection.");
 }
 
 function verifySession()
@@ -22,7 +22,7 @@ function verifySession()
 		$session = $statement->fetch(PDO::FETCH_BOTH);
 		unset($statement);
 	} catch (PDOException $e) {
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "verifySession()", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
@@ -42,7 +42,7 @@ function verifySession()
 			respond(503, false, "Unable to verify session token.");
 		}
 	} catch (PDOException $e) {
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "verifySession()", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
@@ -63,7 +63,7 @@ function verifySession()
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "verifySession()", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 	return true;
@@ -77,7 +77,7 @@ function cleanSessions()
 			respond(503, false, "Unidentified database error.");
 		}
 	} catch (PDOException $e) {
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "verifySession()", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
@@ -86,7 +86,7 @@ function cleanSessions()
 		$statement->execute();
 		unset($statement);
 	} catch (PDOException $e) {
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "verifySession()", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
@@ -97,7 +97,7 @@ function cleanSessions()
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "verifySession()", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 }
