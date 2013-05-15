@@ -1,9 +1,10 @@
 <?php
-
 if (php_sapi_name() !== "cli") {
 	exit("No public access allowed.\n");
 }
+
 define("MODE", "CLI");
+
 if (!isset($argv) || empty($argv) || count($argv) > 2 || !isset($argv[1]) || !is_numeric($argv[1])) {
 	exit("Improper parameters supplied.\n");
 }
@@ -26,7 +27,8 @@ try {
 		exit("Cannot create database transaction. Aborting.\n");
 	}
 } catch (PDOException $e) {
-	exit("PDO Exception.\n" . $e->getMessage() . "\n";
+	$msg = processPDOException($e);
+	exit($msg);
 }
 
 echo "Running build script $id\n";
@@ -34,7 +36,8 @@ try {
 	$query = $db->query($BUILD_STMT);
 } catch (PDOException $e) {
 	$db->rollBack();
-	exit("Error running build script.\n" . $e->getMessage() . "\n";
+	$msg = processPDOException($e);
+	exit($msg);
 }
 
 try {
@@ -43,9 +46,9 @@ try {
 		exit("Error while attempting to commit results of build script.\n");
 	}
 } catch (PDOException $e) {
-	//TODO: examine code & message in exception
 	$db->rollBack();
-	exit("PDO Exception.\n" . $e->getMessage() . "\n";
+	$msg = processPDOException($e);
+	exit($msg);
 }
 echo "Finished build script $id\n";
 
