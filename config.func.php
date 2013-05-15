@@ -41,6 +41,14 @@ if (!is_numeric($CONFIG["LOG_MAX"]) || $CONFIG["LOG_MAX"] < 1) {
 
 /* config-related functions */
 
+function processPDOException(PDOException $e)
+{
+	$msg = "Error code " . $e->getCode();
+	$msg .= ": '" . $e->getMessage "' on line " . $e->getLine() . " of " $e->getFile() . "\n";
+	$msg .= $e->getTraceAsString()
+	return $msg;
+}
+
 /**
  * Do not put a new line at the end of the description.
  * The logRequestTime should be the server time, not the time included in a request.
@@ -48,6 +56,10 @@ if (!is_numeric($CONFIG["LOG_MAX"]) || $CONFIG["LOG_MAX"] < 1) {
  */
 function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 {
+	if ($description instanceof PDOException) {
+		$description = processPDOException($description);
+	}
+
 	$type = "LOG_" . strtoupper($logType);
 	if (!isset($CONFIG[$type])) {
 		if (MODE == "CLI") {
@@ -63,6 +75,7 @@ function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 	}
 
 	logRotate($type);
+	//TODO: actually write to the log
 }
 
 //TODO: strip out log rotation into a library
