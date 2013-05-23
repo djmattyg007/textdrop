@@ -93,7 +93,7 @@ function session_login()
 	$sessionToken = sha1(md5("$userId" . time() . "$findKey" . rand()));
 	try {
 		$statement = $db->prepare("INSERT INTO `sessions` (`key`, `expiry`, `token`) VALUES (?, ?, ?)");
-		$statement->bindParam(1, $findKey, PDO::PARAM_INT);
+		$statement->bindParam(1, $findKey, PDO::PARAM_STR);
 		$statement->bindParam(2, $expiryTime, PDO::PARAM_STR);
 		$statement->bindParam(3, $sessionToken, PDO::PARAM_STR);
 		$statement->execute();
@@ -132,3 +132,4 @@ function session_login()
 	$response["session"]["token"] = $sessionToken;
 	respond(200, true, "Session created successfully.", $response);
 }
+
