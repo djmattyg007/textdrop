@@ -56,6 +56,9 @@ function processPDOException(PDOException $e)
  */
 function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 {
+	if ($logRequestTime === "now") {
+		$logRequestTime = date("Y-m-d H:i:s", time());
+	}
 	if ($description instanceof PDOException) {
 		$description = processPDOException($description);
 	}
@@ -67,7 +70,7 @@ function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 		}
 		$descrip = "The specified log type ({$logType}) does not exist. The following information was supposed to be logged:\n";
 		$descrip .= "logRequestTime: {$logRequestTime}, statusCode: {$statusCode}, call: {$call}, description: {$description}"
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "logEntry()", $descrip);
+		logEntry("ERROR", "now", 500, "logEntry()", $descrip);
 		return;
 	}
 	if (empty($CONFIG[$type])) {

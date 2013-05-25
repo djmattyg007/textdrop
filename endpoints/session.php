@@ -23,7 +23,7 @@ function session_login()
 		$userDetail = $statement->fetch(PDO::FETCH_BOTH);
 		unset($statement);
 	} catch (PDOException $e) {
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, "session_login", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
@@ -44,7 +44,7 @@ function session_login()
 		$keys = $statement->fetchAll(PDO::FETCH_BOTH);
 		unset($statement);
 	} catch (PDOException $e) {
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, "session_login", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
@@ -85,7 +85,7 @@ function session_login()
 			respond(503, false, "Unable to create new session.");
 		}
 	} catch (PDOException $e) {
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, "session_login", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
@@ -100,7 +100,7 @@ function session_login()
 		unset($statement);
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, "session_login", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
@@ -111,7 +111,7 @@ function session_login()
 		unset($statement);
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, "session_login", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
@@ -122,7 +122,7 @@ function session_login()
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, "session_login", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 
