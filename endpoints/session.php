@@ -142,3 +142,40 @@ function session_login()
 	respond(200, true, "Session created successfully.", $response);
 }
 
+$methodRegistry["session_logout"] = true;
+function session_logout()
+{
+	try {
+		if (!$db->beginTransaction()) {
+			respond(503, false, "Unidentified database error.");
+		}
+	} catch (PDOException $e) {
+		logEntry("ERROR", "now", 500, "session_logout", $e);
+		respond(500, false, "Unidentified database error.");
+	}
+
+	try {
+		$statement = $db->prepare("DELETE FROM sessions WHERE token = ?");
+		$statement->bindParam(1, $_POST["token"], PDO::PARAM_STR);
+		$statement->execute();
+		unset($statement);
+	} catch (PDOException $e) {
+		$db->rollBack();
+		logEntry("ERROR", "now", 500, "session_logout", $e);
+		respond(500, false, "Unidentified database error.");
+	}
+
+	try {
+		if (!$db->commit()) {
+			$db->rollBack();
+			respond(503, false, "Unidentified database error.");
+		}
+	} catch (PDOException $e) {
+		$db->rollBack();
+		logEntry("ERROR", "now", 500, "verifySession()", $e);
+		respond(500, false, "Unidentified database error.");
+	}
+
+	respond(200, true, "Session ended successfully.");
+}
+
