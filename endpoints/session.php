@@ -77,6 +77,15 @@ function session_login()
 	// Check to see if the user already has any existing sessions.
 	// First, clean up old ones.
 	cleanSessions();
+	try {
+		$statement = $db->prepare("SELECT COUNT(*) FROM sessions WHERE key = ?");
+		$statement->bindParam(1, $findKey, PDO::PARAM_STR);
+		$statement->execute();
+		//TODO: finish this
+	} catch (PDOException $e) {
+		logEntry("ERROR", "now", 500, "session_login", $e);
+		respond(500, false, "Unidentified database error.");
+	}
 
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
 	// Therefore, create a session for the user as requested.
