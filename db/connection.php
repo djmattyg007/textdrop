@@ -97,7 +97,7 @@ function cleanSessions()
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", date("Y-m-d H:i:s", time()), 500, "verifySession()", $e);
+		logEntry("ERROR", "now", 500, "verifySession()", $e);
 		respond(500, false, "Unidentified database error.");
 	}
 }
