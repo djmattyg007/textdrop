@@ -30,7 +30,10 @@ date_default_timezone_set("UTC");
 $CONFIG["API_SESSION_LENGTH"] = 5;
 $CONFIG["API_REQUEST_TIMEOUT"] = 2;
 
+$CONFIG["LANG"] = "en_AU";
+
 srand(time());
 
+require("translation" . DIRECTORY_SEPARATOR . "translate.php");
 require("config.func.php");
 

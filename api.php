@@ -7,6 +7,9 @@ define("MODE", "API");
 // Initialise response functions.
 require("response.php");
 
+// Setup site configuration.
+require("config.php");
+
 // The client did not specify which method they were calling.
 if (!isset($_GET["q"])) {
 	respond(400, false, "No request method was specified.");
@@ -20,9 +23,6 @@ if (empty($_SERVER["HTTP_X_API_KEY"])) {
 if (empty($_POST["createdAt"]) {
 	respond(400, false, "Unable to ascertain when the request was generated.");
 }
-
-// Setup site configuration.
-require("config.php");
 
 // Do not accept requests made over two minutes ago.
 if (!checkRequestTimeout($_POST["createdAt"]) {

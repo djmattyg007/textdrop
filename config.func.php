@@ -157,3 +157,4 @@ function checkRequestTimeout($requestTime)
 		return false; // Request has timed out.
 	}
 }
+
