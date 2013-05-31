@@ -89,14 +89,7 @@ function session_login()
 
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
 	// Therefore, create a session for the user as requested.
-	try {
-		if (!$db->beginTransaction()) {
-			respond(503, false, "Unable to create new session.");
-		}
-	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, "session_login", $e);
-		respond(500, false, "Unidentified database error.");
-	}
+	createTransaction("Unable to create new session.", "session_login");
 
 	$expiryTime = date("Y-m-d H:i:s", time() + 300);
 	$sessionToken = sha1(md5("$userId" . time() . "$findKey" . rand()));
@@ -145,14 +138,7 @@ function session_login()
 $methodRegistry["session_logout"] = true;
 function session_logout()
 {
-	try {
-		if (!$db->beginTransaction()) {
-			respond(503, false, "Unidentified database error.");
-		}
-	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, "session_logout", $e);
-		respond(500, false, "Unidentified database error.");
-	}
+	beginTransaction("default", "session_logout");
 
 	try {
 		$statement = $db->prepare("DELETE FROM sessions WHERE token = ?");

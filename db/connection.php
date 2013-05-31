@@ -102,3 +102,26 @@ function cleanSessions()
 	}
 }
 
+function createTransaction($msg, $call)
+{
+	$defaultMsg = "Unidentified database error.";
+	try {
+		if (!$db->beginTransaction()) {
+			if (MODE == "CLI") {
+				exit("Cannot create database transaction. Aborting.\n");
+			} else {
+				respond(503, false, (($msg == "" || $msg == "default") ? $defaultMsg : $msg));
+			}
+		}
+	} catch (PDOException $e) {
+		if (MODE == "CLI") {
+			$msg = processPDOException($e);
+			exit($msg);
+		} else {
+			logEntry("ERROR", "now", 500, $call, $e);
+			respond(500, false, $defaultMsg);
+		}
+	}
+	return true;
+}
+
