@@ -23,7 +23,7 @@ function session_login()
 		$userDetail = $statement->fetch(PDO::FETCH_BOTH);
 		unset($statement);
 	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
@@ -44,7 +44,7 @@ function session_login()
 		$keys = $statement->fetchAll(PDO::FETCH_BOTH);
 		unset($statement);
 	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
@@ -83,7 +83,7 @@ function session_login()
 		$statement->execute();
 		//TODO: finish this
 	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
@@ -102,7 +102,7 @@ function session_login()
 		unset($statement);
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", "now", 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
@@ -113,7 +113,7 @@ function session_login()
 		unset($statement);
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", "now", 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
@@ -124,7 +124,7 @@ function session_login()
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", "now", 500, "session_login", $e);
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
@@ -138,7 +138,7 @@ function session_login()
 $methodRegistry["session_logout"] = true;
 function session_logout()
 {
-	beginTransaction("default", "session_logout");
+	beginTransaction("default", __FUNCTION__);
 
 	try {
 		$statement = $db->prepare("DELETE FROM sessions WHERE token = ?");
@@ -147,7 +147,7 @@ function session_logout()
 		unset($statement);
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", "now", 500, "session_logout", $e);
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
@@ -158,7 +158,7 @@ function session_logout()
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", "now", 500, "verifySession()", $e);
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
