@@ -4,13 +4,13 @@ if (!defined("MODE")) {
 }
 
 if (empty($CONFIG) || empty($CONFIG["DB_HOST"]) || empty($CONFIG["DB_NAME"]) || empty($CONFIG["DB_USER"]) || empty($CONFIG["DB_PASS"])) {
-	respond(503, false, "Unable to connect to database.");
+	respond(503, false, translate("Unable to connect to database."));
 }
 
 try {
 	$db = new PDO('mysql:host=' . $CONFIG["DB_HOST"] . ';dbname=' . $CONFIG["DB_NAME"], $CONFIG["DB_USER"], $CONFIG["DB_PASS"]);
 } catch (PDOException $e) {
-	respond(503, false, "Unable to create database connection.");
+	respond(503, false, translate("Unable to create database connection."));
 }
 
 function verifySession()
@@ -23,7 +23,7 @@ function verifySession()
 		unset($statement);
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, "verifySession()", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	if (empty($session)) {
@@ -39,11 +39,11 @@ function verifySession()
 
 	try {
 		if (!$db->beginTransaction()) {
-			respond(503, false, "Unable to verify session token.");
+			respond(503, false, translate("Unable to verify session token."));
 		}
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, "verifySession()", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	try {
@@ -53,7 +53,7 @@ function verifySession()
 		$statement->execute();
 		unset($statement);
 	} catch (PDOException $e) {
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	try {
@@ -64,7 +64,7 @@ function verifySession()
 	} catch (PDOException $e) {
 		$db->rollBack();
 		logEntry("ERROR", "now", 500, "verifySession()", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 	return true;
 	respond(401, false, "Unable to verify session token.");
@@ -74,11 +74,11 @@ function cleanSessions()
 {
 	try {
 		if (!$db->beginTransaction()) {
-			respond(503, false, "Unidentified database error.");
+			respond(503, false, translate("Unidentified database error."));
 		}
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, "verifySession()", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	try {
@@ -87,24 +87,25 @@ function cleanSessions()
 		unset($statement);
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, "verifySession()", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	try {
 		if (!$db->commit()) {
 			$db->rollBack();
-			respond(503, false, "Unidentified database error.");
+			respond(503, false, translate("Unidentified database error."));
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
 		logEntry("ERROR", "now", 500, "verifySession()", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 }
 
+// Assumes $msg has already been run through translation.
 function createTransaction($msg, $call)
 {
-	$defaultMsg = "Unidentified database error.";
+	$defaultMsg = translate("Unidentified database error.");
 	try {
 		if (!$db->beginTransaction()) {
 			if (MODE == "CLI") {

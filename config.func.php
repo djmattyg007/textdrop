@@ -8,7 +8,7 @@ if (!defined("MODE")) {
 if (!empty($CONFIG["LOG_ACCESS"]))
 	if (!is_dir($CONFIG["LOG_ACCESS"]) || !is_writable($CONFIG["LOG_ACCESS"])) {
 		if (MODE == "CLI") {
-			echo "Critical access log file error.\n";
+			echo translate("Critical access log file error.") . "\n";
 		}
 		exit(1);
 	}
@@ -17,7 +17,7 @@ if (!empty($CONFIG["LOG_ACCESS"]))
 if (!empty($CONFIG["LOG_ERROR"]))
 	if (!is_dir($CONFIG["LOG_ERROR"]) || !is_writable($CONFIG["LOG_ERROR"])) {
 		if (MODE == "CLI") {
-			echo "Critical error log file error.\n";
+			echo translate("Critical error log file error.") . "\n";
 		}
 		exit(1);
 	}
@@ -25,7 +25,7 @@ if (!empty($CONFIG["LOG_ERROR"]))
 
 if (!is_numeric($CONFIG["LOG_SIZE"]) || $CONFIG["LOG_SIZE"] < 0.5) {
 	if (MODE == "CLI") {
-		echo "Critical log file error.\n";
+		echo translate("Critical log file error.") . "\n";
 	}
 	exit(1);
 }
@@ -33,7 +33,7 @@ if (!is_numeric($CONFIG["LOG_SIZE"]) || $CONFIG["LOG_SIZE"] < 0.5) {
 //TODO: see if this can be changed to zero once log rotation is in operation
 if (!is_numeric($CONFIG["LOG_MAX"]) || $CONFIG["LOG_MAX"] < 1) {
 	if (MODE == "CLI") {
-		echo "Critical log file error.\n";
+		echo translate("Critical log file error.") . "\n";
 	}
 	exit(1);
 }
@@ -66,7 +66,7 @@ function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 	$type = "LOG_" . strtoupper($logType);
 	if (!isset($CONFIG[$type])) {
 		if (MODE == "CLI") {
-			echo "Critical error log file error.\n";
+			echo translate("Critical log file error.") . "\n";
 		}
 		$descrip = "The specified log type ({$logType}) does not exist. The following information was supposed to be logged:\n";
 		$descrip .= "logRequestTime: {$logRequestTime}, statusCode: {$statusCode}, call: {$call}, description: {$description}"
@@ -142,7 +142,7 @@ function logRotate($logType)
 
 	logerror:
 	if (MODE == "CLI") {
-		echo "Critical log file rotation error.";
+		echo translate("Critical log file rotation error.") . "\n";
 	}
 	exit(1);
 	//TODO: think of a better strategy then simply exiting if we can't rotate logs...

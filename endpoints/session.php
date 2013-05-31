@@ -11,7 +11,7 @@ function session_login()
 {
 	// The client quite obviously can't authenticate without a username or password.
 	if (!isset($_POST["username"]) || !isset($_POST["password"])) {
-		respond(401, false, "There was no username or password supplied with the request.");
+		respond(401, false, translate("There was no username or password supplied with the request."));
 	}
 
 	// Check to see if the username and password exist and match.
@@ -24,7 +24,7 @@ function session_login()
 		unset($statement);
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, "session_login", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	// Make sure the user exists and is active.
@@ -33,7 +33,7 @@ function session_login()
 		unset($userDetail);
 	} else {
 		// Do not inform the client the selected user may be inactive.
-		respond(401, false, "Incorrect username or password.");
+		respond(401, false, translate("Incorrect username or password."));
 	}
 
 	// Grab the user's API keys from the database.
@@ -45,13 +45,13 @@ function session_login()
 		unset($statement);
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, "session_login", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	// No keys were found.
 	if (count($keys) == 0) {
 		// Do not inform the client there are no API keys for the user.
-		respond(401, false, "Invalid API key.");
+		respond(401, false, translate("Invalid API key."));
 	}
 	// Cycle through all of the keys returned from the database to find one that matches
 	// the supplied key.
@@ -63,14 +63,14 @@ function session_login()
 				break;
 			} else {
 				// Do not inform the client that the API key it supplied is inactive.
-				respond(401, false, "Invalid API key.");
+				respond(401, false, translate("Invalid API key."));
 			}
 		}
 	}
 	// No active keys matched the supplied key.
 	if (!$findKey) {
 		// No matching API keys were found for that user.
-		respond(401, false, "Invalid API key.");
+		respond(401, false, translate("Invalid API key."));
 	}
 	unset($keys);
 
@@ -84,7 +84,7 @@ function session_login()
 		//TODO: finish this
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, "session_login", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
@@ -103,7 +103,7 @@ function session_login()
 	} catch (PDOException $e) {
 		$db->rollBack();
 		logEntry("ERROR", "now", 500, "session_login", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	try {
@@ -114,25 +114,25 @@ function session_login()
 	} catch (PDOException $e) {
 		$db->rollBack();
 		logEntry("ERROR", "now", 500, "session_login", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	try {
 		if (!$db->commit()) {
 			$db->rollBack();
-			respond(503, false, "Unable to create new session.");
+			respond(503, false, translate("Unable to create new session."));
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
 		logEntry("ERROR", "now", 500, "session_login", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	$response = array();
 	$response["session"] = array();
 	$response["session"]["expiryTime"] = $expiryTime;
 	$response["session"]["token"] = $sessionToken;
-	respond(200, true, "Session created successfully.", $response);
+	respond(200, true, translate("New session created successfully."), $response);
 }
 
 $methodRegistry["session_logout"] = true;
@@ -148,20 +148,20 @@ function session_logout()
 	} catch (PDOException $e) {
 		$db->rollBack();
 		logEntry("ERROR", "now", 500, "session_logout", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
 	try {
 		if (!$db->commit()) {
 			$db->rollBack();
-			respond(503, false, "Unidentified database error.");
+			respond(503, false, translate("Unidentified database error."));
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
 		logEntry("ERROR", "now", 500, "verifySession()", $e);
-		respond(500, false, "Unidentified database error.");
+		respond(500, false, translate("Unidentified database error."));
 	}
 
-	respond(200, true, "Session ended successfully.");
+	respond(200, true, translate("Session ended successfully."));
 }
 

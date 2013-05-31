@@ -15,7 +15,7 @@ require(".." . DIRECTORY_SEPARATOR . "db" . DIRECTORY_SEPARATOR . "connection.ph
 
 try {
 	if (!file_exists($id . ".sql")) {
-		exit("Cannot find specified build script.\n");
+		exit(translate("Cannot find specified build script.") . "\n");
 	}
 	$BUILD_STMT = file_get_contents($id . ".sql");
 } catch (Exception $e) {
@@ -24,7 +24,7 @@ try {
 
 try {
 	if (!$db->beginTransaction()) {
-		exit("Cannot create database transaction. Aborting.\n");
+		exit(translate("Cannot create database transaction. Aborting.") . "\n");
 	}
 } catch (PDOException $e) {
 	$msg = processPDOException($e);
@@ -43,7 +43,7 @@ try {
 try {
 	if (!$db->commit()) {
 		$db->rollBack();
-		exit("Error while attempting to commit results of build script.\n");
+		exit(translate("Error while attempting to commit results of build script.") . "\n");
 	}
 } catch (PDOException $e) {
 	$db->rollBack();
