@@ -89,7 +89,7 @@ function session_login()
 
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
 	// Therefore, create a session for the user as requested.
-	createTransaction("Unable to create new session.", "session_login");
+	createTransaction(translate("Unable to create new session."), __FUNCTION__);
 
 	$expiryTime = date("Y-m-d H:i:s", time() + 300);
 	$sessionToken = sha1(md5("$userId" . time() . "$findKey" . rand()));
