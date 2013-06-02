@@ -105,13 +105,12 @@ function cleanSessions()
 // Assumes $msg has already been run through translation.
 function createTransaction($msg, $call)
 {
-	$defaultMsg = translate("Unidentified database error.");
 	try {
 		if (!$db->beginTransaction()) {
 			if (MODE == "CLI") {
 				exit("Cannot create database transaction. Aborting.\n");
 			} else {
-				respond(503, false, (($msg == "" || $msg == "default") ? $defaultMsg : $msg));
+				respond(503, false, (($msg == "" || $msg == "default") ? translate("Unidentified database error.") : $msg));
 			}
 		}
 	} catch (PDOException $e) {
@@ -120,7 +119,7 @@ function createTransaction($msg, $call)
 			exit($msg);
 		} else {
 			logEntry("ERROR", "now", 500, $call, $e);
-			respond(500, false, $defaultMsg);
+			respond(500, false, translate("Unidentified database error."));
 		}
 	}
 	return true;
