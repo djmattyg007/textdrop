@@ -110,7 +110,7 @@ function createTransaction($msg, $call)
 			if (MODE == "CLI") {
 				exit("Cannot create database transaction. Aborting.\n");
 			} else {
-				respond(503, false, (($msg == "" || $msg == "default") ? translate("Unidentified database error.") : $msg));
+				respond(503, false, (($msg == "" || $msg === "default") ? translate("Unidentified database error.") : $msg));
 			}
 		}
 	} catch (PDOException $e) {
