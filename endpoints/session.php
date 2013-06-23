@@ -117,16 +117,7 @@ function session_login()
 		respond(500, false, translate("Unidentified database error."));
 	}
 
-	try {
-		if (!$db->commit()) {
-			$db->rollBack();
-			respond(503, false, translate("Unable to create new session."));
-		}
-	} catch (PDOException $e) {
-		$db->rollBack();
-		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
-		respond(500, false, translate("Unidentified database error."));
-	}
+	finishTransaction("Unable to create new session.", __FUNCTION__);
 
 	$response = array();
 	$response["session"] = array();
@@ -151,16 +142,7 @@ function session_logout()
 		respond(500, false, translate("Unidentified database error."));
 	}
 
-	try {
-		if (!$db->commit()) {
-			$db->rollBack();
-			respond(503, false, translate("Unidentified database error."));
-		}
-	} catch (PDOException $e) {
-		$db->rollBack();
-		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
-		respond(500, false, translate("Unidentified database error."));
-	}
+	finishTransaction("default", __FUNCTION__);
 
 	respond(200, true, translate("Session ended successfully."));
 }

@@ -125,3 +125,18 @@ function createTransaction($msg, $call)
 	return true;
 }
 
+function finishTransaction($msg, $call)
+{
+	try {
+		if (!$db->commit()) {
+			$db->rollBack();
+			respond(503, false, (($msg == "" || $msg === "default") ? translate("Unidentified database error.") : $msg));
+		}
+	} catch (PDOException $e) {
+		$db->rollBack();
+		logEntry("ERROR", "now", 500, $call, $e);
+		respond(500, false, translate("Unidentified database error."));
+	}
+	return true;
+}
+
