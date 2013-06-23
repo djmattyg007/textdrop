@@ -125,6 +125,7 @@ function createTransaction($msg, $call)
 	return true;
 }
 
+// Assumes $msg has already been run through translation.
 function finishTransaction($msg, $call)
 {
 	try {
