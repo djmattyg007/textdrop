@@ -77,7 +77,7 @@ function cleanSessions()
 			respond(503, false, translate("Unidentified database error."));
 		}
 	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, "verifySession()", $e);
+		logEntry("ERROR", "now", 500, "cleanSessions()", $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
@@ -86,7 +86,7 @@ function cleanSessions()
 		$statement->execute();
 		unset($statement);
 	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, "verifySession()", $e);
+		logEntry("ERROR", "now", 500, "cleanSessions()", $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
@@ -97,7 +97,7 @@ function cleanSessions()
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
-		logEntry("ERROR", "now", 500, "verifySession()", $e);
+		logEntry("ERROR", "now", 500, "cleanSessions()", $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 }
