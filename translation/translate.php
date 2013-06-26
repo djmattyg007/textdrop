@@ -1,6 +1,6 @@
 <?php
 
-if (!empty($CONFIG["LANG"])) {
+if (empty($CONFIG["LANG"])) {
 	//TODO: respond with error
 }
 
