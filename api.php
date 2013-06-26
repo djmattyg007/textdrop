@@ -54,7 +54,7 @@ if (!isset($methodRegistry[$requestFunction])) {
 // Setup database connection.
 require("db" . DIRECTORY_SEPARATOR . "connection.php");
 
-// If the endpoint method requires authentication, check to see whether or not we have it.
+// Check to see if the selected endpoint method requires authentication
 if ($methodRegistry[$requestFunction]) {
 	verifySession();
 }
