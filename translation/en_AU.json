@@ -21,5 +21,8 @@
 	"Invalid API key." : "Invalid API key.",
 	"Unable to create new session." : "Unable to create new session.",
 	"New session created successfully." : "New session created successfully.",
-	"Session ended successfully." : "Session ended successfully."
+	"Session ended successfully." : "Session ended successfully.",
+	"Session token and API key do not match." : "Session token and API key do not match.",
+	"Session has expired. Please reauthenticate." : "Session has expired. Please reauthenticate.",
+	"Session does not exist." : "Session does not exist."
 }

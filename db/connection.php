@@ -27,14 +27,14 @@ function verifySession()
 	}
 
 	if (empty($session)) {
-		respond(401, false, "Session does not exist.");
+		respond(401, false, translate("Session does not exist."));
 	}
 	if ($session["key"] !== $_SERVER["HTTP_X_API_KEY"]) {
-		respond(401, false, "Session token and API key do not match.");
+		respond(401, false, translate("Session token and API key do not match."));
 	}
 	if (strtotime($_POST["createdAt"]) > strtotime($session["expiry"])) {
 		cleanSessions();
-		respond(401, false, "Session has expired. Please reauthenticate.");
+		respond(401, false, translate("Session has expired. Please reauthenticate."));
 	}
 
 	try {
@@ -59,7 +59,7 @@ function verifySession()
 	try {
 		if (!$db->commit()) {
 			$db->rollBack();
-			respond(503, false, "Unable to verify session token.");
+			respond(503, false, translate("Unable to verify session token."));
 		}
 	} catch (PDOException $e) {
 		$db->rollBack();
@@ -67,7 +67,7 @@ function verifySession()
 		respond(500, false, translate("Unidentified database error."));
 	}
 	return true;
-	respond(401, false, "Unable to verify session token.");
+	respond(401, false, translate("Unable to verify session token."));
 }
 
 function cleanSessions()
