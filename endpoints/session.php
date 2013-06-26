@@ -10,7 +10,7 @@ $methodRegistry["session_login"] = false;
 function session_login()
 {
 	// The client quite obviously can't authenticate without a username or password.
-	if (!isset($_POST["username"]) || !isset($_POST["password"])) {
+	if (empty($_POST["username"]) || empty($_POST["password"])) {
 		respond(401, false, translate("There was no username or password supplied with the request."));
 	}
 
