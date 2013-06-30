@@ -53,6 +53,7 @@ function verifySession()
 		$statement->execute();
 		unset($statement);
 	} catch (PDOException $e) {
+		logEntry("ERROR", "now", 500, "verifySession()", $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
 
