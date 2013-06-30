@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 	`active` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
 	`permission` TINYINT UNSIGNED NOT NULL DEFAULT 1,
 	`lastLogin` TIMESTAMP,
-	ADD CONSTRAINT username_ux UNIQUE (`username`),
-	ADD CONSTRAINT displayname_ux UNIQUE (`displayname`)
+	CONSTRAINT username_ux UNIQUE (`username`),
+	CONSTRAINT displayname_ux UNIQUE (`displayname`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `api_keys` (
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `api_keys` (
 	`key` CHAR(40) NOT NULL,
 	`owner` SMALLINT UNSIGNED NOT NULL,
 	`active` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
-	ADD CONSTRAINT api_key_ux UNIQUE (`key`),
+	CONSTRAINT api_key_ux UNIQUE (`key`),
 	FOREIGN KEY(`owner`) REFERENCES users(`owner`) ON DELETE CASCADE
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 	`key` SMALLINT UNSIGNED NOT NULL,
 	`expiry` TIMESTAMP NOT NULL,
 	`totalRequests` INT UNSIGNED NOT NULL DEFAULT 0,
-	ADD CONSTRAINT session_token_ux UNIQUE (`token`),
+	CONSTRAINT session_token_ux UNIQUE (`token`),
 	FOREIGN KEY(`key`) REFERENCES api_keys(`keyID`) ON DELETE CASCADE
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
