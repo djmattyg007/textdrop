@@ -81,6 +81,7 @@ function session_login()
 		$statement = $db->prepare("SELECT COUNT(*) FROM sessions WHERE key = ?");
 		$statement->bindParam(1, $findKey, PDO::PARAM_STR);
 		$statement->execute();
+		unset($statement);
 		//TODO: finish this
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
@@ -129,7 +130,7 @@ function session_login()
 $methodRegistry["session_logout"] = true;
 function session_logout()
 {
-	beginTransaction("default", __FUNCTION__);
+	createTransaction("default", __FUNCTION__);
 
 	try {
 		$statement = $db->prepare("DELETE FROM sessions WHERE token = ?");
