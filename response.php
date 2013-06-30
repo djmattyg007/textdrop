@@ -8,7 +8,7 @@ function respond($statusCode, $successful, $message, $payload = null)
 	// Error check the provided variables.
 	if (!is_int($statusCode)) {
 		respondFatal();
-	} else if ($statusCode < 100 || >= 600) {
+	} else if ($statusCode < 100 || $statusCode >= 600) {
 		// There aren't any HTTP status codes outside of these bounds.
 		respondFatal();
 	}
