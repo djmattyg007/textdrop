@@ -1,12 +1,12 @@
 <?php
 
 if (empty($CONFIG["LANG"])) {
-	//TODO: respond with error
+	respondFatal();
 }
 
 $translationFile = $CONFIG["LANG"] . ".json";
 if (!file_exists($translationFile)) {
-	//TODO: respond with error
+	respondFatal();
 }
 
 $translation = file_get_contents($translationFile);
