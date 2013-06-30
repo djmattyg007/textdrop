@@ -20,7 +20,7 @@ if (empty($_SERVER["HTTP_X_API_KEY"])) {
 	respond(400, false, translate("There was no API key supplied with the request."));
 }
 
-if (empty($_POST["createdAt"]) {
+if (empty($_POST["createdAt"])) {
 	respond(400, false, translate("Unable to ascertain when the request was generated."));
 }
 
