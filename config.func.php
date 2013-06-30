@@ -116,7 +116,7 @@ function logRotate($logType)
 			if ($x = $maxLogs) {
 				unlink($oldLog);
 			} else {
-				rename($oldLog, $logFile . "." . ($x + 1) . ".gz";
+				rename($oldLog, $logFile . "." . ($x + 1) . ".gz");
 			}
 		}
 	}
