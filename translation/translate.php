@@ -4,7 +4,7 @@ if (empty($CONFIG["LANG"])) {
 	respondFatal();
 }
 
-$translationFile = $CONFIG["LANG"] . ".json";
+$translationFile = __DIR__ . DIRECTORY_SEPARATOR . $CONFIG["LANG"] . ".json";
 if (!file_exists($translationFile)) {
 	respondFatal();
 }
