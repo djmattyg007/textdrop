@@ -44,7 +44,7 @@ if (!is_numeric($CONFIG["LOG_MAX"]) || $CONFIG["LOG_MAX"] < 1) {
 function processPDOException(PDOException $e)
 {
 	$msg = "Error code " . $e->getCode();
-	$msg .= ": '" . $e->getMessage "' on line " . $e->getLine() . " of " . $e->getFile() . "\n";
+	$msg .= ": '" . $e->getMessage() . "' on line " . $e->getLine() . " of " . $e->getFile() . "\n";
 	$msg .= $e->getTraceAsString();
 	return $msg;
 }
