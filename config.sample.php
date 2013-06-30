@@ -7,6 +7,8 @@ $CONFIG = array();
 
 $CONFIG["APP_NAME"] = "TextDrop";
 
+$CONFIG["MAX_SUMMARY_LEN"] = 1000;
+
 // Enter the directory to store the logs.
 // No trailing slashes!
 $CONFIG["LOG_ACCESS"] = "";
