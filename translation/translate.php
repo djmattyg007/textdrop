@@ -18,8 +18,8 @@ if (!$translation) {
 
 function translate($str)
 {
-	if (isset($translation->{"$code"})) {
-		return $translation->{"$code"};
+	if (isset($translation->{"$str"})) {
+		return $translation->{"$str"};
 	} else {
 		return $str;
 	}
