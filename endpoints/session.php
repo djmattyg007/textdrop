@@ -91,7 +91,7 @@ function session_login()
 	// Therefore, create a session for the user as requested.
 	createTransaction(translate("Unable to create new session."), __FUNCTION__);
 
-	$expiryTime = date("Y-m-d H:i:s", time() + 300);
+	$expiryTime = date("Y-m-d H:i:s", time() + ($CONFIG["API_SESSION_LENGTH"] * 60));
 	$sessionToken = sha1(md5("$userId" . time() . "$findKey" . rand()));
 	try {
 		$statement = $db->prepare("INSERT INTO `sessions` (`key`, `expiry`, `token`) VALUES (?, ?, ?)");
