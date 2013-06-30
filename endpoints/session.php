@@ -39,7 +39,7 @@ function session_login()
 
 	// Grab the user's API keys from the database.
 	try {
-		$statement = $db->prepare("SELECT keyID, key, active FROM api_keys WHERE owner = ?");
+		$statement = $db->prepare("SELECT `keyID`, `key`, `active` FROM `api_keys` WHERE `owner` = ?");
 		$statement->bindParam(1, $userID, PDO::PARAM_INT);
 		$statement->execute();
 		$keys = $statement->fetchAll(PDO::FETCH_BOTH);
