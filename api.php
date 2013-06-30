@@ -25,7 +25,7 @@ if (empty($_POST["createdAt"])) {
 }
 
 // Do not accept requests made over two minutes ago.
-if (!checkRequestTimeout($_POST["createdAt"]) {
+if (!checkRequestTimeout($_POST["createdAt"])) {
 	respond(408, false, translate("Your request timed out. Please check the time on your device."));
 }
 
