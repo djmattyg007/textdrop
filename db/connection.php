@@ -16,7 +16,7 @@ try {
 function verifySession()
 {
 	try {
-		$statement = $db->prepare("SELECT created, key, expiry FROM sessions WHERE token = ?");
+		$statement = $db->prepare("SELECT s.created, k.key, s.expiry, k.owner FROM sessions s, api_keys k WHERE s.key = k.keyID AND s.token = ?");
 		$statement->bindParam(1, $_POST["token"], PDO::PARAM_STR);
 		$statement->execute();
 		$session = $statement->fetch(PDO::FETCH_BOTH);
@@ -67,6 +67,9 @@ function verifySession()
 		logEntry("ERROR", "now", 500, "verifySession()", $e);
 		respond(500, false, translate("Unidentified database error."));
 	}
+
+	$GLOBAL["CURUSER"] = $session["owner"];
+	unset($session);
 	return true;
 	respond(401, false, translate("Unable to verify session token."));
 }

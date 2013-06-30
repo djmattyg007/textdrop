@@ -37,3 +37,6 @@ srand(time());
 require("translation" . DIRECTORY_SEPARATOR . "translate.php");
 require("config.func.php");
 
+// Generally there should be no reason to touch these.
+$GLOBAL = array();
+$GLOBAL["CURUSER"] = null;
