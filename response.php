@@ -12,7 +12,7 @@ function respond($statusCode, $successful, $message, $payload = null)
 		// There aren't any HTTP status codes outside of these bounds.
 		respondFatal();
 	}
-	if (!is_bool($successful) {
+	if (!is_bool($successful)) {
 		respondFatal();
 	}
 	// The payload must be an array.
