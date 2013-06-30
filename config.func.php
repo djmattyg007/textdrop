@@ -5,7 +5,7 @@ if (!defined("MODE")) {
 
 /* error-check config entries */
 
-if (!empty($CONFIG["LOG_ACCESS"]))
+if (!empty($CONFIG["LOG_ACCESS"])) {
 	if (!is_dir($CONFIG["LOG_ACCESS"]) || !is_writable($CONFIG["LOG_ACCESS"])) {
 		if (MODE == "CLI") {
 			echo translate("Critical access log file error.") . "\n";
@@ -14,7 +14,7 @@ if (!empty($CONFIG["LOG_ACCESS"]))
 	}
 }
 
-if (!empty($CONFIG["LOG_ERROR"]))
+if (!empty($CONFIG["LOG_ERROR"])) {
 	if (!is_dir($CONFIG["LOG_ERROR"]) || !is_writable($CONFIG["LOG_ERROR"])) {
 		if (MODE == "CLI") {
 			echo translate("Critical error log file error.") . "\n";
