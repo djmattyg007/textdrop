@@ -59,7 +59,7 @@ function session_login()
 	$findKey = NULL;
 	foreach ($keys as $key) {
 		if ($key["key"] === $_SERVER["HTTP_X_API_KEY"]) {
-			if ($key["active"] === 1) {
+			if (intval($key["active"]) === 1) {
 				$findKey = $key["id"];
 				break;
 			} else {
