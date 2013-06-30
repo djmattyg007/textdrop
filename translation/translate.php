@@ -5,7 +5,7 @@ if (empty($CONFIG["LANG"])) {
 }
 
 $translationFile = $CONFIG["LANG"] . ".json";
-if (!file_exists($translationFile) {
+if (!file_exists($translationFile)) {
 	//TODO: respond with error
 }
 
