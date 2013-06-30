@@ -34,7 +34,7 @@ function verifySession()
 	}
 	if (strtotime($_POST["createdAt"]) > strtotime($session["expiry"])) {
 		cleanSessions();
-		respond(401, false, translate("Session has expired. Please reauthenticate."));
+		respond(419, false, translate("Session has expired. Please reauthenticate."));
 	}
 
 	try {
