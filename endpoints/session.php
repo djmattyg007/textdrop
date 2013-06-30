@@ -39,7 +39,7 @@ function session_login()
 
 	// Grab the user's API keys from the database.
 	try {
-		$statement = $db->prepare("SELECT id, key, active FROM api_keys WHERE owner = ?");
+		$statement = $db->prepare("SELECT keyID, key, active FROM api_keys WHERE owner = ?");
 		$statement->bindParam(1, $userID, PDO::PARAM_INT);
 		$statement->execute();
 		$keys = $statement->fetchAll(PDO::FETCH_BOTH);
@@ -60,7 +60,7 @@ function session_login()
 	foreach ($keys as $key) {
 		if ($key["key"] === $_SERVER["HTTP_X_API_KEY"]) {
 			if (intval($key["active"]) === 1) {
-				$findKey = $key["id"];
+				$findKey = $key["keyID"];
 				break;
 			} else {
 				// Do not inform the client that the API key it supplied is inactive.
