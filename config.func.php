@@ -69,7 +69,7 @@ function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 			echo translate("Critical log file error.") . "\n";
 		}
 		$descrip = "The specified log type ({$logType}) does not exist. The following information was supposed to be logged:\n";
-		$descrip .= "logRequestTime: {$logRequestTime}, statusCode: {$statusCode}, call: {$call}, description: {$description}"
+		$descrip .= "logRequestTime: {$logRequestTime}, statusCode: {$statusCode}, call: {$call}, description: {$description}";
 		logEntry("ERROR", "now", 500, "logEntry()", $descrip);
 		return;
 	}
