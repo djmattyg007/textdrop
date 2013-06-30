@@ -151,7 +151,7 @@ function logRotate($logType)
 function checkRequestTimeout($requestTime)
 {
 	$timeout = strtotime($requestTime) + ($CONFIG["API_REQUEST_TIMEOUT"] * 60);
-	if ($timeout > $time()) {
+	if ($timeout > time()) {
 		return true; // Request has not timed out.
 	} else {
 		return false; // Request has timed out.
