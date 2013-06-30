@@ -40,3 +40,5 @@ require("config.func.php");
 // Generally there should be no reason to touch these.
 $GLOBAL = array();
 $GLOBAL["CURUSER"] = null;
+$GLOBAL["EXPIRYTIME"] = null;
+

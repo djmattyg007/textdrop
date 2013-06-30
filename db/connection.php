@@ -46,9 +46,10 @@ function verifySession()
 		respond(500, false, translate("Unidentified database error."));
 	}
 
+	$GLOBAL["EXPIRYTIME"] = date("Y-m-d H:i:s", time() + ($CONFIG["API_SESSION_LENGTH"] * 60));
 	try {
 		$statement = $db->prepare("UPDATE sessions SET expiry = ?, totalRequests = totalRequests + 1 WHERE token = ?");
-		$statement->bindParam(1, $_POST["createdAt"], PDO::PARAM_STR);
+		$statement->bindParam(1, $GLOBAL["EXPIRYTIME"], PDO::PARAM_STR);
 		$statement->bindParam(2, $_POST["token"], PDO::PARAM_STR);
 		$statement->execute();
 		unset($statement);
