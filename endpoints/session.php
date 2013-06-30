@@ -94,7 +94,7 @@ function session_login()
 	createTransaction(translate("Unable to create new session."), __FUNCTION__);
 
 	$expiryTime = date("Y-m-d H:i:s", time() + ($GLOBALS["CONFIG"]["API_SESSION_LENGTH"] * 60));
-	$sessionToken = sha1(md5("$userId" . time() . "$findKey" . rand()));
+	$sessionToken = sha1(md5("$userID" . time() . "$findKey" . rand()));
 	try {
 		$statement = $db->prepare("INSERT INTO `sessions` (`key`, `expiry`, `token`) VALUES (?, ?, ?)");
 		$statement->bindParam(1, $findKey, PDO::PARAM_STR);
