@@ -13,6 +13,7 @@ function session_login()
 	if (empty($_POST["username"]) || empty($_POST["password"])) {
 		respond(401, false, translate("There was no username or password supplied with the request."));
 	}
+	global $db, $GLOBAL;
 
 	// Check to see if the username and password exist and match.
 	try {
@@ -92,7 +93,7 @@ function session_login()
 	// Therefore, create a session for the user as requested.
 	createTransaction(translate("Unable to create new session."), __FUNCTION__);
 
-	$expiryTime = date("Y-m-d H:i:s", time() + ($CONFIG["API_SESSION_LENGTH"] * 60));
+	$expiryTime = date("Y-m-d H:i:s", time() + ($GLOBALS["CONFIG"]["API_SESSION_LENGTH"] * 60));
 	$sessionToken = sha1(md5("$userId" . time() . "$findKey" . rand()));
 	try {
 		$statement = $db->prepare("INSERT INTO `sessions` (`key`, `expiry`, `token`) VALUES (?, ?, ?)");
@@ -130,6 +131,7 @@ function session_login()
 $methodRegistry["session_logout"] = true;
 function session_logout()
 {
+	global $db;
 	createTransaction("default", __FUNCTION__);
 
 	try {

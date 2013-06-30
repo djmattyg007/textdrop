@@ -15,6 +15,7 @@ try {
 
 function verifySession()
 {
+	global $db, $GLOBAL;
 	try {
 		$statement = $db->prepare("SELECT s.created, k.key, s.expiry, k.owner FROM sessions s, api_keys k WHERE s.key = k.keyID AND s.token = ?");
 		$statement->bindParam(1, $_POST["token"], PDO::PARAM_STR);
@@ -46,7 +47,7 @@ function verifySession()
 		respond(500, false, translate("Unidentified database error."));
 	}
 
-	$GLOBAL["EXPIRYTIME"] = date("Y-m-d H:i:s", time() + ($CONFIG["API_SESSION_LENGTH"] * 60));
+	$GLOBAL["EXPIRYTIME"] = date("Y-m-d H:i:s", time() + ($GLOBALS["CONFIG"]["API_SESSION_LENGTH"] * 60));
 	try {
 		$statement = $db->prepare("UPDATE sessions SET expiry = ?, totalRequests = totalRequests + 1 WHERE token = ?");
 		$statement->bindParam(1, $GLOBAL["EXPIRYTIME"], PDO::PARAM_STR);
@@ -77,6 +78,7 @@ function verifySession()
 
 function cleanSessions()
 {
+	global $db;
 	try {
 		if (!$db->beginTransaction()) {
 			respond(503, false, translate("Unidentified database error."));
@@ -110,6 +112,7 @@ function cleanSessions()
 // Assumes $msg has already been run through translation.
 function createTransaction($msg, $call)
 {
+	global $db;
 	try {
 		if (!$db->beginTransaction()) {
 			if (MODE == "CLI") {
@@ -133,6 +136,7 @@ function createTransaction($msg, $call)
 // Assumes $msg has already been run through translation.
 function finishTransaction($msg, $call)
 {
+	global $db;
 	try {
 		if (!$db->commit()) {
 			$db->rollBack();

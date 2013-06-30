@@ -56,6 +56,8 @@ function processPDOException(PDOException $e)
  */
 function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 {
+	global $CONFIG;
+
 	if ($logRequestTime === "now") {
 		$logRequestTime = date("Y-m-d H:i:s", time());
 	}
@@ -84,6 +86,8 @@ function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 //TODO: strip out log rotation into a library
 function logRotate($logType)
 {
+	global $CONFIG;
+
 	// If there is no existing log file, create one and finish.
 	$logFile = $CONFIG[$logType] . DIRECTORY_SEPARATOR . $logType . ".log";
 	if (!file_exists($CONFIG[$logType])) {
@@ -150,7 +154,7 @@ function logRotate($logType)
 
 function checkRequestTimeout($requestTime)
 {
-	$timeout = strtotime($requestTime) + ($CONFIG["API_REQUEST_TIMEOUT"] * 60);
+	$timeout = strtotime($requestTime) + ($GLOBALS["CONFIG"]["API_REQUEST_TIMEOUT"] * 60);
 	if ($timeout > time()) {
 		return true; // Request has not timed out.
 	} else {
