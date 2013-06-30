@@ -30,7 +30,7 @@ function session_login()
 
 	// Make sure the user exists and is active.
 	if (isset($userDetail["userID"]) && isset($userDetail["active"]) && intval($userDetail["active"]) === 1) {
-		$userID = $userDetail["userID"];
+		$userID = intval($userDetail["userID"]);
 		unset($userDetail);
 	} else {
 		// Do not inform the client the selected user may be inactive.
