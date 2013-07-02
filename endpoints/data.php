@@ -6,6 +6,8 @@ if (!defined("MODE")) {
 $methodRegistry["data_send"] = true;
 function data_send()
 {
+	global $db, $GLOBAL;
+
 	if (empty($_POST["datatype"])) {
 		respond(400, false, translate("There was no datatype supplied with the request."));
 	} elseif (empty($_POST["subject"])) {
