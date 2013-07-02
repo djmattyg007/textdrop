@@ -50,7 +50,7 @@ function data_send()
 		respond(500, false, translate("Unidentified database error."));
 	}
 	
-	finishTransaction(translate("Unable to save submitted data.", __FUNCTION__);
+	finishTransaction(translate("Unable to save submitted data."), __FUNCTION__);
 
 	$response = array();
 	$response["data"] = array();
