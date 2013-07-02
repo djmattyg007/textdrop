@@ -19,8 +19,8 @@ function data_send()
 
 	if (empty($_POST["summary"])) {
 		$data["summary"] = "";
-	} elseif (strlen($_POST["summary"]) > $CONFIG["MAX_SUMMARY_LEN"]) {
-		respond(400, false, translate("The summary cannot be longer than " . $CONFIG["MAX_SUMMARY_LEN"] . " characters."));
+	} elseif (strlen($_POST["summary"]) > $GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"]) {
+		respond(400, false, translate("The summary cannot be longer than " . $GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"] . " characters."));
 	} else {
 		$data["summary"] = $_POST["summary"];
 	}
