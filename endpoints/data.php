@@ -37,7 +37,7 @@ function data_send()
 		//check sendTo ID to make sure it exists
 	}
 
-	createTransaction(translate("Unable to save submitted data.", __FUNCTION__);
+	createTransaction(translate("Unable to save submitted data."), __FUNCTION__);
 
 	try {
 		$statement = $db->prepare("INSERT INTO `main_data` (`dateRecorded`, `datatype`, `subject`, `summary`, `text`, `owner`, `sendTo`) VALUES (?, ?, ?, ?, ?, ?, ?)");
