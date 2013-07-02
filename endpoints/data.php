@@ -43,7 +43,14 @@ function data_send()
 
 	try {
 		$statement = $db->prepare("INSERT INTO `main_data` (`dateRecorded`, `datatype`, `subject`, `summary`, `text`, `owner`, `sendTo`) VALUES (?, ?, ?, ?, ?, ?, ?)");
-		$statement->execute($data);
+		$statement->bindParam(1, $data["dateRecorded"], PDO::PARAM_STR);
+		$statement->bindParam(2, $data["datatype"], PDO::PARAM_STR);
+		$statement->bindParam(3, $data["subject"], PDO::PARAM_STR);
+		$statement->bindParam(4, $data["summary"], PDO::PARAM_STR);
+		$statement->bindParam(5, $data["text"], PDO::PARAM_STR);
+		$statement->bindParam(6, $data["owner"], PDO::PARAM_INT);
+		$statement->bindParam(7, $data["sendTo"], PDO::PARAM_INT);
+		$statement->execute();
 		$dataID = $db->lastInsertId();
 		unset($statement);
 	} catch (PDOException $e) {
