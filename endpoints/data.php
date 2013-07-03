@@ -77,7 +77,7 @@ function data_recv()
 
 	if (empty($_POST["limit"])) {
 		$limit = $GLOBALS["CONFIG"]["DATA_GET_DEFAULT"];
-	} elseif (!is_numeric($_POST["limit"]) || !is_int($_POST["limit"])) {
+	} elseif (!is_numeric($_POST["limit"])) {
 		respond(400, false, translate("Invalid limit requested."));
 	} else {
 		$intLimit = intval($_POST["limit"]);
