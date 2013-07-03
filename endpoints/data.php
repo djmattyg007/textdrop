@@ -109,7 +109,11 @@ function data_recv()
 	}
 
 	$response = array();
-	$response["data"] = $data;
+	$response["request"] = array();
+	$response["request"]["data"] = $data;
+	if ($badLimit) {
+		$response["request"]["warning"] = translate("The limit you supplied was out of the allowed range.");
+	}
 	$response["session"] = array();
 	$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
 	respond(200, true, translate("Requested data successfully retrieved."), $response);
