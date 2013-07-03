@@ -103,6 +103,7 @@ function data_recv()
 			if ($page < 0) {
 				respond(400, false, translate("Invalid page number supplied with your request."));
 			}
+			$page *= $limit;
 		}
 	} else {
 		$page = 0;
