@@ -100,7 +100,7 @@ function data_recv()
 			respond(400, false, translate("Invalid page number supplied with your request."));
 		} else {
 			$page = intval($_POST["page"]) - 1;
-			if ($intPage < 0) {
+			if ($page < 0) {
 				respond(400, false, translate("Invalid page number supplied with your request."));
 			}
 		}
