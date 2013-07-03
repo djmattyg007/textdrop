@@ -69,3 +69,48 @@ function data_send()
 	respond(200, true, translate("Submitted data saved successfully."), $response);
 }
 
+$methodRegistry["data_recv"] = true;
+function data_recv()
+{
+	global $db, $GLOBAL;
+
+	if (empty($_POST["limit"])) {
+		$limit = $GLOBALS["CONFIG"]["DATA_GET_DEFAULT"];
+	} elseif (!is_numeric($_POST["limit"]) || !is_int($_POST["limit"])) {
+		respond(400, false, translate("Invalid limit requested."));
+	} else {
+		$intLimit = intval($_POST["limit"]);
+		if ($intLimit > $GLOBALS["CONFIG"]["DATA_GET_MAX"]) {
+			$badLimit = true;
+			$limit = $GLOBALS["CONFIG"]["DATA_GET_MAX"];
+		} elseif ($intLimit < 1) {
+			$badLimit = true;
+			$limit = $GLOBALS["CONFIG"]["DATA_GET_DEFAULT"];
+		} else {
+			$badLimit = false;
+			$limit = $intLimit;
+		}
+	}
+
+	try {
+		$statement = $db->prepare("SELECT `id`, `dateRecorded`, `datatype`, `subject`, `summary`, `text`, `sendTo` FROM `main_data` WHERE `owner` = ? ORDER BY `dateRecorded` DESC LIMIT ?");
+		$statement->bindParam(1, $GLOBAL["CURUSER"], PDO::PARAM_INT);
+		$statement->bindParam(2, $limit, PDO::PARAM_INT);
+		$statement->execute();
+		$data = array();
+		while ($row = $statement->fetch(PDO::FETCH_BOTH)) {
+			$data[] = $row;
+		}
+		unset($statement);
+	} catch (PDOException $e) {
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
+		respond(500, false, translate("Unable to grab the selected data."));
+	}
+
+	$response = array();
+	$response["data"] = $data;
+	$response["session"] = array();
+	$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
+	respond(200, true, translate("Requested data successfully retrieved."), $response);
+}
+

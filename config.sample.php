@@ -9,6 +9,10 @@ $CONFIG["APP_NAME"] = "TextDrop";
 
 $CONFIG["MAX_SUMMARY_LEN"] = 1000;
 
+// It's up to the administrator to ensure max is greater than default.
+$CONFIG["DATA_GET_MAX"] = 50;
+$CONFIG["DATA_GET_DEFAULT"] = 10;
+
 // Enter the directory to store the logs.
 // No trailing slashes!
 $CONFIG["LOG_ACCESS"] = "";
