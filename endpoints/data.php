@@ -78,7 +78,7 @@ function data_recv()
 	if (empty($_POST["limit"])) {
 		$limit = $GLOBALS["CONFIG"]["DATA_GET_DEFAULT"];
 	} elseif (!is_numeric($_POST["limit"])) {
-		respond(400, false, translate("Invalid limit requested."));
+		respond(400, false, translate("Invalid limit supplied with your request."));
 	} else {
 		$intLimit = intval($_POST["limit"]);
 		if ($intLimit > $GLOBALS["CONFIG"]["DATA_GET_MAX"]) {
@@ -93,10 +93,26 @@ function data_recv()
 		}
 	}
 
+	if (isset($badLimit) && $badLimit == false) {
+		if (empty($_POST["page"])) {
+			$page = 0;
+		} elseif (!is_numeric($_POST["page"])) {
+			respond(400, false, translate("Invalid page number supplied with your request."));
+		} else {
+			$page = intval($_POST["page"]) - 1;
+			if ($intPage < 0) {
+				respond(400, false, translate("Invalid page number supplied with your request."));
+			}
+		}
+	} else {
+		$page = 0;
+	}
+
 	try {
-		$statement = $db->prepare("SELECT `id`, `dateRecorded`, `datatype`, `subject`, `summary`, `text`, `sendTo` FROM `main_data` WHERE `owner` = ? ORDER BY `dateRecorded` DESC LIMIT ?");
+		$statement = $db->prepare("SELECT `id`, `dateRecorded`, `datatype`, `subject`, `summary`, `text`, `sendTo` FROM `main_data` WHERE `owner` = ? ORDER BY `dateRecorded` DESC LIMIT ?, ?");
 		$statement->bindParam(1, $GLOBAL["CURUSER"], PDO::PARAM_INT);
-		$statement->bindParam(2, $limit, PDO::PARAM_INT);
+		$statement->bindParam(2, $page, PDO::PARAM_INT);
+		$statement->bindParam(3, $limit, PDO::PARAM_INT);
 		$statement->execute();
 		$data = array();
 		while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
