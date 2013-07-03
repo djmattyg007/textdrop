@@ -99,7 +99,7 @@ function data_recv()
 		$statement->bindParam(2, $limit, PDO::PARAM_INT);
 		$statement->execute();
 		$data = array();
-		while ($row = $statement->fetch(PDO::FETCH_BOTH)) {
+		while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 			$data[] = $row;
 		}
 		unset($statement);
