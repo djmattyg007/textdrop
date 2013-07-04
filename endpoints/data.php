@@ -138,3 +138,73 @@ function data_grab()
 	respond(200, true, translate("Requested data successfully retrieved."), $response);
 }
 
+$methodRegistry["data_get"] = true;
+//TODO: add public/private attribute of data
+//TODO: add friendships
+function data_get()
+{
+	if (empty($_POST["dataID"]) {
+		respond(400, false, translate("There was no data ID supplied with the request."));
+	}
+	if (!is_numeric($_POST["dataID"]) {
+		respond(400, false, translate("Invalid data ID supplied with the request."));
+	}
+	global $db, $GLOBAL;
+
+	try {
+		$statement = $db->prepare("SELECT `dateRecorded`, `datatype`, `subject`, `summary`, `text`, `owner`, `sendTo` FROM `main_data` WHERE `id` = ?");
+		$statement->bindParam(1, intval($_POST["dataID"]), PDO::PARAM_INT);
+		$statement->execute();
+		$data = $statement->fetch(PDO::FETCH_ASSOC);
+		unset($statement);
+	} catch (PDOException $e) {
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
+		respond(500, false, translate("Unable to get the selected data."));
+	}
+
+	if (!$data) {
+		respond(400, false, translate("There was no data matching the ID supplied with the request."));
+	}
+
+	$response = array();
+	$response["request"] = array();
+	$response["request"]["data"] = $data;
+	$response["session"] = array();
+	$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
+	respond(200, true, translate("Requested data successfully retrieved."), $response);
+}
+
+$methodRegistry["data_type"] = true;
+function data_type()
+{
+	if (empty($_POST["dataID"]) {
+		respond(400, false, translate("There was no data ID supplied with the request."));
+	}
+	if (!is_numeric($_POST["dataID"]) {
+		respond(400, false, translate("Invalid data ID supplied with the request."));
+	}
+	global $db, $GLOBAL;
+
+	try {
+		$statement = $db->prepare("SELECT `datatype` FROM `main_data` WHERE `id` = ?");
+		$statement->bindParam(1, intval($_POST["dataID"]), PDO::PARAM_INT);
+		$statement->execute();
+		$datatype = $statement->fetch(PDO::FETCH_ASSOC);
+		unset($statement);
+	} catch (PDOException $e) {
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
+		respond(500, false, translate("Unable to get the datatype for the selected data."));
+	}
+
+	if (!$data) {
+		respond(400, false, translate("There was no data matching the ID supplied with the request."));
+	}
+
+	$response = array();
+	$response["request"] = array();
+	$response["request"]["datatype"] = $datatype;
+	$response["session"] = array();
+	$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
+	respond(200, true, translate("Datatype for requested data successfully retrieved."), $response);
+}
+
