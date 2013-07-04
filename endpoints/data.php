@@ -80,7 +80,7 @@ function data_grab()
 	if (empty($_POST["limit"])) {
 		$limit = $GLOBALS["CONFIG"]["DATA_GET_DEFAULT"];
 	} elseif (!is_numeric($_POST["limit"])) {
-		respond(400, false, translate("Invalid limit supplied with your request."));
+		respond(400, false, translate("Invalid limit supplied with the request."));
 	} else {
 		$intLimit = intval($_POST["limit"]);
 		if ($intLimit > $GLOBALS["CONFIG"]["DATA_GET_MAX"]) {
@@ -99,11 +99,11 @@ function data_grab()
 		if (empty($_POST["page"])) {
 			$page = 0;
 		} elseif (!is_numeric($_POST["page"])) {
-			respond(400, false, translate("Invalid page number supplied with your request."));
+			respond(400, false, translate("Invalid page number supplied with the request."));
 		} else {
 			$page = intval($_POST["page"]) - 1;
 			if ($page < 0) {
-				respond(400, false, translate("Invalid page number supplied with your request."));
+				respond(400, false, translate("Invalid page number supplied with the request."));
 			}
 			$page *= $limit;
 		}

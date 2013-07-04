@@ -30,8 +30,8 @@
 	"Datatypes other than text are not supported at this time." : "Datatypes other than text are not supported at this time.",
 	"Unable to save submitted data." : "Unable to save submitted data.",
 	"Submitted data saved successfully." : "Submitted data saved successfully.",
-	"Invalid limit supplied with your request." : "Invalid limit supplied with your request.",
-	"Invalid page number supplied with your request." : "Invalid page number supplied with your request.",
+	"Invalid limit supplied with your request." : "Invalid limit supplied with the request.",
+	"Invalid page number supplied with your request." : "Invalid page number supplied with the request.",
 	"Unable to grab the selected data." : "Unable to grab the selected data.",
 	"The limit you supplied was out of the allowed range." : "The limit you supplied was out of the allowed range.",
 	"Requested data successfully retrieved." : "Requested data successfully retrieved."
