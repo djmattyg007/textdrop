@@ -70,8 +70,8 @@ function data_send()
 	respond(200, true, translate("Submitted data saved successfully."), $response);
 }
 
-$methodRegistry["data_recv"] = true;
-function data_recv()
+$methodRegistry["data_grab"] = true;
+function data_grab()
 {
 	global $db, $GLOBAL;
 
