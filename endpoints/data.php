@@ -71,6 +71,8 @@ function data_send()
 }
 
 $methodRegistry["data_grab"] = true;
+//TODO: make text optional
+//TODO: make summary optional, but on by default
 function data_grab()
 {
 	global $db, $GLOBAL;
