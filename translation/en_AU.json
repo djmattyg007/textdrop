@@ -24,5 +24,15 @@
 	"Session ended successfully." : "Session ended successfully.",
 	"Session token and API key do not match." : "Session token and API key do not match.",
 	"Session has expired. Please reauthenticate." : "Session has expired. Please reauthenticate.",
-	"Session does not exist." : "Session does not exist."
+	"Session does not exist." : "Session does not exist.",
+	"There was no datatype supplied with the request." : "There was no datatype supplied with the request.",
+	"There was no subject supplied with the request." : "There was no subject supplied with the request.",
+	"Datatypes other than text are not supported at this time." : "Datatypes other than text are not supported at this time.",
+	"Unable to save submitted data." : "Unable to save submitted data.",
+	"Submitted data saved successfully." : "Submitted data saved successfully.",
+	"Invalid limit supplied with your request." : "Invalid limit supplied with your request.",
+	"Invalid page number supplied with your request." : "Invalid page number supplied with your request.",
+	"Unable to grab the selected data." : "Unable to grab the selected data.",
+	"The limit you supplied was out of the allowed range." : "The limit you supplied was out of the allowed range.",
+	"Requested data successfully retrieved." : "Requested data successfully retrieved."
 }
