@@ -13,7 +13,7 @@ $translation = file_get_contents($translationFile);
 $translation = json_decode($translation);
 
 if (!$translation) {
-	//TODO: respond with error
+	respondFatal();
 }
 
 function translate($str)
