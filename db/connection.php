@@ -78,16 +78,9 @@ function verifySession()
 
 function cleanSessions()
 {
-	global $db;
-	try {
-		if (!$db->beginTransaction()) {
-			respond(503, false, translate("Unidentified database error."));
-		}
-	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, "cleanSessions()", $e);
-		respond(500, false, translate("Unidentified database error."));
-	}
+	createTransaction("default", "cleanSessions()");
 
+	global $db;
 	try {
 		$statement = $db->prepare("DELETE FROM sessions WHERE expiry < UTC_TIMESTAMP()");
 		$statement->execute();
@@ -97,16 +90,7 @@ function cleanSessions()
 		respond(500, false, translate("Unidentified database error."));
 	}
 
-	try {
-		if (!$db->commit()) {
-			$db->rollBack();
-			respond(503, false, translate("Unidentified database error."));
-		}
-	} catch (PDOException $e) {
-		$db->rollBack();
-		logEntry("ERROR", "now", 500, "cleanSessions()", $e);
-		respond(500, false, translate("Unidentified database error."));
-	}
+	finishTransaction("default", "cleanSessions()");
 }
 
 // Assumes $msg has already been run through translation.
