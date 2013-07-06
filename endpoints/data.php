@@ -71,8 +71,6 @@ function data_send()
 }
 
 $methodRegistry["data_grab"] = true;
-//TODO: make text optional
-//TODO: make summary optional, but on by default
 function data_grab()
 {
 	global $db, $GLOBAL;
@@ -111,8 +109,20 @@ function data_grab()
 		$page = 0;
 	}
 
+	if ($_POST["summary"] === "off") {
+		$summary = "";
+	} else {
+		$summary = ", `summary`";
+	}
+
+	if ($_POST["text"] === "on") {
+		$text = ", `text`";
+	} else {
+		$text = "";
+	}
+
 	try {
-		$statement = $db->prepare("SELECT `id`, `dateRecorded`, `datatype`, `subject`, `summary`, `text`, `sendTo` FROM `main_data` WHERE `owner` = ? ORDER BY `dateRecorded` DESC LIMIT ?, ?");
+		$statement = $db->prepare("SELECT `id`, `dateRecorded`, `datatype`, `subject`{$summary}{$text}, `sendTo` FROM `main_data` WHERE `owner` = ? ORDER BY `dateRecorded` DESC LIMIT ?, ?");
 		$statement->bindParam(1, $GLOBAL["CURUSER"], PDO::PARAM_INT);
 		$statement->bindParam(2, $page, PDO::PARAM_INT);
 		$statement->bindParam(3, $limit, PDO::PARAM_INT);
