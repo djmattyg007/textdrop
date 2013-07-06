@@ -8,6 +8,7 @@ function data_send()
 {
 	global $db, $GLOBAL;
 
+	// Check for compulsory values.
 	if (empty($_POST["datatype"])) {
 		respond(400, false, translate("There was no datatype supplied with the request."));
 	} elseif (empty($_POST["subject"])) {
@@ -19,6 +20,7 @@ function data_send()
 	$data["datatype"] = $_POST["datatype"];
 	$data["subject"] = $_POST["subject"];
 
+	// Sanity-check the optional values.
 	if (empty($_POST["summary"])) {
 		$data["summary"] = "";
 	} elseif (strlen($_POST["summary"]) > $GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"]) {
@@ -76,15 +78,19 @@ function data_grab()
 	global $db, $GLOBAL;
 
 	if (empty($_POST["limit"])) {
+		// If the user didn't supply a limit, use the default.
 		$limit = $GLOBALS["CONFIG"]["DATA_GET_DEFAULT"];
 	} elseif (!is_numeric($_POST["limit"])) {
+		// If the user didn't supply a numeric limit, tell them they made a mistake.
 		respond(400, false, translate("Invalid limit supplied with the request."));
 	} else {
 		$intLimit = intval($_POST["limit"]);
 		if ($intLimit > $GLOBALS["CONFIG"]["DATA_GET_MAX"]) {
+			// If the user wants more than the allowed maximum, give them the maximum and warn them.
 			$badLimit = true;
 			$limit = $GLOBALS["CONFIG"]["DATA_GET_MAX"];
 		} elseif ($intLimit < 1) {
+			// If the user wants less than one data, warn them and give them the default.
 			$badLimit = true;
 			$limit = $GLOBALS["CONFIG"]["DATA_GET_DEFAULT"];
 		} else {
@@ -93,6 +99,7 @@ function data_grab()
 		}
 	}
 
+	// If the user doesn't supply a valid limit, ignore any value they gave as a page number.
 	if (isset($badLimit) && $badLimit == false) {
 		if (empty($_POST["page"])) {
 			$page = 0;
@@ -109,12 +116,14 @@ function data_grab()
 		$page = 0;
 	}
 
+	// The summary can be turned off, but is on by default.
 	if ($_POST["summary"] === "off") {
 		$summary = "";
 	} else {
 		$summary = ", `summary`";
 	}
 
+	// The text is off by default, but can be turned on.
 	if ($_POST["text"] === "on") {
 		$text = ", `text`";
 	} else {
