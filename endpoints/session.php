@@ -78,15 +78,20 @@ function session_login()
 	// Check to see if the user already has any existing sessions.
 	// First, clean up old ones.
 	cleanSessions();
+	// Grab the count.
 	try {
 		$statement = $db->prepare("SELECT COUNT(*) FROM sessions WHERE key = ?");
 		$statement->bindParam(1, $findKey, PDO::PARAM_STR);
 		$statement->execute();
+		$sessionKeyTotal = $statement->fetchColumn();
 		unset($statement);
-		//TODO: finish this
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
 		respond(500, false, translate("Unidentified database error."));
+	}
+
+	if ($sessionKeyTotal >= $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]) {
+		respond(401, false, translate("You already have at least " . $GLOBAL["CONFIG"]["MAX_SESSIONS_PER_KEY"] . " active sessions with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one."));
 	}
 
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
@@ -125,6 +130,7 @@ function session_login()
 	$response["session"] = array();
 	$response["session"]["expiryTime"] = $expiryTime;
 	$response["session"]["token"] = $sessionToken;
+	$response["session"]["activeKey"] = $sessionKeyTotal;
 	respond(200, true, translate("New session created successfully."), $response);
 }
 
