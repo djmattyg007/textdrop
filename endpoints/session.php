@@ -4,7 +4,7 @@ if (!defined("MODE")) {
 }
 
 $methodRegistry["session_login"] = false;
-//TODO: check for number of active sessions per api key
+//TODO: check for number of active sessions per user
 //TODO: record log of transactions
 //TODO: create access and error logs
 function session_login()
@@ -80,7 +80,7 @@ function session_login()
 	cleanSessions();
 	// Grab the count.
 	try {
-		$statement = $db->prepare("SELECT COUNT(*) FROM sessions WHERE key = ?");
+		$statement = $db->prepare("SELECT COUNT(*) FROM `sessions` WHERE `key` = ?");
 		$statement->bindParam(1, $findKey, PDO::PARAM_STR);
 		$statement->execute();
 		$sessionKeyTotal = $statement->fetchColumn();
@@ -91,7 +91,7 @@ function session_login()
 	}
 
 	if ($sessionKeyTotal >= $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]) {
-		respond(401, false, translate("You already have at least " . $GLOBAL["CONFIG"]["MAX_SESSIONS_PER_KEY"] . " active sessions with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one."));
+		respond(429, false, translate("You already have at least " . $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"] . " active session(s) with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one."));
 	}
 
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
