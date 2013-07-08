@@ -7,6 +7,7 @@ $CONFIG = array();
 
 $CONFIG["APP_NAME"] = "TextDrop";
 
+// Set this to zero or null to remove the limit.
 $CONFIG["MAX_SUMMARY_LEN"] = 1000;
 
 // It's up to the administrator to ensure max is greater than default.
