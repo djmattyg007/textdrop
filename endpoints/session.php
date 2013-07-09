@@ -95,7 +95,7 @@ function session_login()
 
 	if ($sessionKeyTotal >= $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]) {
 		// The user has too many sessions with the current API key. Slow them down.
-		respond(429, false, translate("You already have at least " . $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"] . " active session(s) with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one."));
+		respond(429, false, translate("You already have at least {s} active session(s) with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one.", $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]));
 	}
 
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
