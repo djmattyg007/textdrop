@@ -25,7 +25,7 @@ function data_send()
 		$data["summary"] = "";
 	} elseif (is_numeric($GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"] && $GOBALS["CONFIG"]["MAX_SUMMARY_LEN"] > 0 && strlen($_POST["summary"]) > $GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"]) {
 		unset($data);
-		respond(400, false, translate("The summary cannot be longer than " . $GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"] . " characters."));
+		respond(400, false, translate("The summary cannot be longer than {s} characters.", $GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"]));
 	} else {
 		$data["summary"] = $_POST["summary"];
 	}
