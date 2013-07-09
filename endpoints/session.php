@@ -56,20 +56,22 @@ function session_login()
 	}
 	// Cycle through all of the keys returned from the database to find one that matches
 	// the supplied key.
-	$findKey = NULL;
+	$findKey = array();
+	$findKey["key"] = NULL;
+	$findKey["all"] = array();
 	foreach ($keys as $key) {
 		if ($key["key"] === $_SERVER["HTTP_X_API_KEY"]) {
 			if (intval($key["active"]) === 1) {
-				$findKey = $key["keyID"];
-				break;
+				$findKey["key"] = $key["keyID"];
 			} else {
 				// Do not inform the client that the API key it supplied is inactive.
 				respond(401, false, translate("Invalid API key."));
 			}
 		}
+		$findKey["all"][] = $key["keyID"];
 	}
 	// No active keys matched the supplied key.
-	if (!$findKey) {
+	if (!$findKey["key"]) {
 		// No matching API keys were found for that user.
 		respond(401, false, translate("Invalid API key."));
 	}
@@ -81,7 +83,8 @@ function session_login()
 	// Grab the count.
 	try {
 		$statement = $db->prepare("SELECT COUNT(*) FROM `sessions` WHERE `key` = ?");
-		$statement->bindParam(1, $findKey, PDO::PARAM_STR);
+		//TODO: shouldn't this be an int?
+		$statement->bindParam(1, $findKey["key"], PDO::PARAM_STR);
 		$statement->execute();
 		$sessionKeyTotal = $statement->fetchColumn();
 		unset($statement);
@@ -100,10 +103,11 @@ function session_login()
 	createTransaction(translate("Unable to create new session."), __FUNCTION__);
 
 	$expiryTime = date("Y-m-d H:i:s", time() + ($GLOBALS["CONFIG"]["API_SESSION_LENGTH"] * 60));
-	$sessionToken = sha1(md5("$userID" . time() . "$findKey" . rand()));
+	$sessionToken = sha1(md5("$userID" . time() . "{$findKey["key"]}" . rand()));
 	try {
 		$statement = $db->prepare("INSERT INTO `sessions` (`key`, `expiry`, `token`) VALUES (?, ?, ?)");
-		$statement->bindParam(1, $findKey, PDO::PARAM_STR);
+		//TODO: shouldn't this be an int?
+		$statement->bindParam(1, $findKey["key"], PDO::PARAM_STR);
 		$statement->bindParam(2, $expiryTime, PDO::PARAM_STR);
 		$statement->bindParam(3, $sessionToken, PDO::PARAM_STR);
 		$statement->execute();
