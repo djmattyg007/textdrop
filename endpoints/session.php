@@ -137,7 +137,7 @@ function session_login()
 	$response["session"]["token"] = $sessionToken;
 	$response["session"]["active"] = array();
 	$response["session"]["active"]["key"] = ($sessionKeyTotal + 1);
-	$response["session"]["active"]["user"] = (count($findKey["all"] + 1);
+	$response["session"]["active"]["user"] = (count($findKey["all"]) + 1);
 	respond(200, true, translate("New session created successfully."), $response);
 }
 
