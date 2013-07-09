@@ -135,7 +135,7 @@ function session_login()
 	$response["session"] = array();
 	$response["session"]["expiryTime"] = $expiryTime;
 	$response["session"]["token"] = $sessionToken;
-	$response["session"]["activeKey"] = $sessionKeyTotal;
+	$response["session"]["activeKey"] = ($sessionKeyTotal + 1);
 	respond(200, true, translate("New session created successfully."), $response);
 }
 
