@@ -16,10 +16,14 @@ if (!$translation) {
 	respondFatal();
 }
 
-function translate($str)
+function translate($str, $val = null)
 {
 	if (isset($translation->{"$str"})) {
-		return $translation->{"$str"};
+		$string = $translation->{"$str"};
+		if ($val) {
+			$string = str_replace("{s}", $val, $string);
+		}
+		return $string;
 	} else {
 		return $str;
 	}
