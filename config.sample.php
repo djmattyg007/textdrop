@@ -10,6 +10,7 @@ $CONFIG["APP_NAME"] = "TextDrop";
 // Set this to zero or null to remove the limit.
 $CONFIG["MAX_SUMMARY_LEN"] = 1000;
 
+// Set these to zero or null to remove the limit.
 $CONFIG["MAX_SESSIONS_PER_USER"] = 10;
 $CONFIG["MAX_SESSIONS_PER_KEY"] = 3;
 

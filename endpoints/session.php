@@ -80,22 +80,24 @@ function session_login()
 	// Check to see if the user already has any existing sessions.
 	// First, clean up old ones.
 	cleanSessions();
-	// Grab the count.
-	try {
-		$statement = $db->prepare("SELECT COUNT(*) FROM `sessions` WHERE `key` = ?");
-		//TODO: shouldn't this be an int?
-		$statement->bindParam(1, $findKey["key"], PDO::PARAM_STR);
-		$statement->execute();
-		$sessionKeyTotal = $statement->fetchColumn();
-		unset($statement);
-	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
-		respond(500, false, translate("Unidentified database error."));
-	}
+	if ($GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]) {
+		// Grab the count.
+		try {
+			$statement = $db->prepare("SELECT COUNT(*) FROM `sessions` WHERE `key` = ?");
+			//TODO: shouldn't this be an int?
+			$statement->bindParam(1, $findKey["key"], PDO::PARAM_STR);
+			$statement->execute();
+			$sessionKeyTotal = $statement->fetchColumn();
+			unset($statement);
+		} catch (PDOException $e) {
+			logEntry("ERROR", "now", 500, __FUNCTION__, $e);
+			respond(500, false, translate("Unidentified database error."));
+		}
 
-	if ($sessionKeyTotal >= $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]) {
-		// The user has too many sessions with the current API key. Slow them down.
-		respond(429, false, translate("You already have at least {s} active session(s) with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one.", $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]));
+		if ($sessionKeyTotal >= $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]) {
+			// The user has too many sessions with the current API key. Slow them down.
+			respond(429, false, translate("You already have at least {s} active session(s) with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one.", $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]));
+		}
 	}
 
 	// If we reach this point, the client has (theoretically) successfully authenticated with the system.
