@@ -19,7 +19,7 @@ try {
 	}
 	$BUILD_STMT = file_get_contents($id . ".sql");
 } catch (Exception $e) {
-	exit("Unable to open specified build script.\n");
+	exit(translate("Unable to open specified build script.") . "\n");
 }
 
 try {
@@ -31,7 +31,7 @@ try {
 	exit($msg);
 }
 
-echo "Running build script $id\n";
+echo translate("Running build script {s}",  $id) . "\n";
 try {
 	$query = $db->query($BUILD_STMT);
 } catch (PDOException $e) {
@@ -50,5 +50,5 @@ try {
 	$msg = processPDOException($e);
 	exit($msg);
 }
-echo "Finished build script $id\n";
+echo translate("Finished build script {s}", $id) . "\n";
 

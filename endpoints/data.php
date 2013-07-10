@@ -150,7 +150,7 @@ function data_grab()
 	$response["request"] = array();
 	$response["request"]["data"] = $data;
 	if ($badLimit) {
-		$response["request"]["warning"] = translate("The limit you supplied was out of the allowed range.");
+		$response["request"]["warning"] = translate("The supplied limit was out of the allowed range.");
 	}
 	$response["session"] = array();
 	$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
