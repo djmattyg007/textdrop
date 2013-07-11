@@ -169,10 +169,14 @@ function data_get()
 		respond(400, false, translate("Invalid data ID supplied with the request."));
 	}
 	global $db, $GLOBAL;
+	$dataID = intval($_POST["dataID"]);
+	if (dataf_owner($dataID) != $GLOBAL["CURUSER"]) {
+		respond(403, false, translate("You don't have permission to see that data."));
+	}
 
 	try {
 		$statement = $db->prepare("SELECT `dateRecorded`, `datatype`, `subject`, `summary`, `text`, `owner`, `sendTo` FROM `main_data` WHERE `id` = ?");
-		$statement->bindParam(1, intval($_POST["dataID"]), PDO::PARAM_INT);
+		$statement->bindParam(1, $dataID, PDO::PARAM_INT);
 		$statement->execute();
 		$data = $statement->fetch(PDO::FETCH_ASSOC);
 		unset($statement);

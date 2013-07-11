@@ -39,6 +39,10 @@ if (!file_exists($endpoint)) {
 }
 $methodRegistry = array(); // Used to set whether or not a method requires authentication.
 require($endpoint); // Initialise the method registry and the endpoint's methods.
+$endpointFunc = "functions" . DIRECTORY_SEPARATOR . $requestType . ".php";
+if (file_exists($endpointFunc)) {
+	require($endpointFunc);
+}
 
 $requestMethod = $request[1]; // Explicitly grab the second segment of the request URI (the endpoint method).
 $requestFunction = $requestType . "_" . $requestMethod; // Construct the endpoint method's function name.
