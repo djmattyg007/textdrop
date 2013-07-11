@@ -1,5 +1,5 @@
 <?php
-//TODO: consider abstracting the creation and committing of DB transactions
+//TODO: finish abstracting the creation and committing of DB transactions
 //TODO: re-check 500 errors
 
 define("MODE", "API");
