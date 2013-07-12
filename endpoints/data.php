@@ -171,6 +171,9 @@ function data_get()
 	global $db, $GLOBAL;
 	$dataID = intval($_POST["dataID"]);
 	if (dataf_owner($dataID) != $GLOBAL["CURUSER"]) {
+		// This check doesn't distinguish between the user attempting to access a data they don't own,
+		// and the data simply not existing. This doesn't matter, as the user shouldn't know the
+		// difference if they don't own it.
 		respond(403, false, translate("You don't have permission to see that data."));
 	}
 
