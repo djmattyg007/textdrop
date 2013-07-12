@@ -234,3 +234,107 @@ function data_type()
 	respond(200, true, translate("Datatype for requested data successfully retrieved."), $response);
 }
 
+$methodRegistry["data_archive"] = true;
+function data_archive()
+{
+	if (empty($_POST["dataID"]) {
+		respond(400, false, translate("There was no data ID supplied with the request."));
+	}
+	if (!is_numeric($_POST["dataID"]) {
+		respond(400, false, translate("Invalid data ID supplied with the request."));
+	}
+	global $db, $GLOBAL;
+	$dataID = intval($_POST["dataID"]);
+	if (dataf_owner($dataID) != $GLOBAL["CURUSER"]) {
+		// This check doesn't distinguish between the user attempting to modify a data they don't own,
+		// and the data simply not existing. This doesn't matter, as the user shouldn't know the
+		// difference if they don't own it.
+		respond(403, false, translate("You don't have permission to do that."));
+	}
+
+	$archived = dataf_archived($dataID);
+
+	if ($archived == 0) {
+		createTransaction(translate("Unable to archive selected data."), __FUNCTION__);
+
+		try {
+			$statement = $db->prepare("UPDATE `main_data` SET `archived` = 1 WHERE `id` = ?");
+			$statement->bindParam(1, $dataID, PDO::PARAM_INT);
+			$statement->execute();
+			unset($statement);
+		} catch (PDOException $e) {
+			logEntry("ERROR", "now", 500, __FUNCTION__, $e);
+			respond(500, false, translate("Unable to archive the selected data."));
+		}
+
+		finishTransaction(translate("Unable to archive selected data."), __FUNCTION__);
+
+		$response = array();
+		$response["request"] = array();
+		$response["request"]["archived"] = true;
+		$response["session"] = array();
+		$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
+		respond(200, true, translate("Supplied data successfully archived."), $response);
+	} else {
+		$response = array();
+		$response["request"] = array();
+		$response["request"]["archived"] = true;
+		$response["request"]["warning"] = translate("The supplied data was already archived.");
+		$response["session"] = array();
+		$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
+		respond(200, true, translate("Supplied data is archived."), $response);
+	}
+}
+
+$methodRegistry["data_unarchive"] = true;
+function data_unarchive()
+{
+	if (empty($_POST["dataID"]) {
+		respond(400, false, translate("There was no data ID supplied with the request."));
+	}
+	if (!is_numeric($_POST["dataID"]) {
+		respond(400, false, translate("Invalid data ID supplied with the request."));
+	}
+	global $db, $GLOBAL;
+	$dataID = intval($_POST["dataID"]);
+	if (dataf_owner($dataID) != $GLOBAL["CURUSER"]) {
+		// This check doesn't distinguish between the user attempting to modify a data they don't own,
+		// and the data simply not existing. This doesn't matter, as the user shouldn't know the
+		// difference if they don't own it.
+		respond(403, false, translate("You don't have permission to do that."));
+	}
+
+	$archived = dataf_archived($dataID);
+
+	if ($archived == 1) {
+		createTransaction(translate("Unable to unarchive selected data."), __FUNCTION__);
+
+		try {
+			$statement = $db->prepare("UPDATE `main_data` SET `archived` = 0 WHERE `id` = ?");
+			$statement->bindParam(1, $dataID, PDO::PARAM_INT);
+			$statement->execute();
+			unset($statement);
+		} catch (PDOException $e) {
+			logEntry("ERROR", "now", 500, __FUNCTION__, $e);
+			respond(500, false, translate("Unable to unarchive the selected data."));
+		}
+
+		finishTransaction(translate("Unable to unarchive selected data."), __FUNCTION__);
+
+		$response = array();
+		$response["request"] = array();
+		$response["request"]["archived"] = false;
+		$response["session"] = array();
+		$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
+		respond(200, true, translate("Supplied data successfully unarchived."), $response);
+	} else {
+		$response = array();
+		$response["request"] = array();
+		$response["request"]["archived"] = false;
+		$response["request"]["warning"] = translate("The supplied data was already not archived.");
+		$response["session"] = array();
+		$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
+		respond(200, true, translate("Supplied data is not archived."), $response);
+	}
+}
+
