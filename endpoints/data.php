@@ -131,7 +131,7 @@ function data_grab()
 	}
 
 	try {
-		$statement = $db->prepare("SELECT `id`, `dateRecorded`, `datatype`, `subject`{$summary}{$text}, `sendTo` FROM `main_data` WHERE `owner` = ? ORDER BY `dateRecorded` DESC LIMIT ?, ?");
+		$statement = $db->prepare("SELECT `id`, `dateRecorded`, `datatype`, `subject`{$summary}{$text}, `sendTo` FROM `main_data` WHERE `owner` = ? AND `archived` = 0 ORDER BY `dateRecorded` DESC LIMIT ?, ?");
 		$statement->bindParam(1, $GLOBAL["CURUSER"], PDO::PARAM_INT);
 		$statement->bindParam(2, $page, PDO::PARAM_INT);
 		$statement->bindParam(3, $limit, PDO::PARAM_INT);
