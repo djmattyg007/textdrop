@@ -14,6 +14,10 @@ $CONFIG["MAX_SUMMARY_LEN"] = 1000;
 $CONFIG["MAX_SESSIONS_PER_USER"] = 10;
 $CONFIG["MAX_SESSIONS_PER_KEY"] = 3;
 
+// This shouldn't be set any lower than 1.
+$CONFIG["MIN_SEARCH_LEN"] = 2;
+$CONFIG["MAX_SEARCH_RESULTS"] = 10;
+
 // It's up to the administrator to ensure max is greater than default.
 $CONFIG["DATA_GET_MAX"] = 50;
 $CONFIG["DATA_GET_DEFAULT"] = 10;
