@@ -3,11 +3,11 @@ if (!defined("MODE")) {
 	exit("No direct script access allowed.");
 }
 
-if (empty($CONFIG["LANG"])) {
+if (empty($CONFIG["APP"]["LANG"])) {
 	respondFatal();
 }
 
-$translationFile = __DIR__ . DIRECTORY_SEPARATOR . $CONFIG["LANG"] . ".json";
+$translationFile = __DIR__ . DIRECTORY_SEPARATOR . $CONFIG["APP"]["LANG"] . ".json";
 if (!file_exists($translationFile)) {
 	respondFatal();
 }

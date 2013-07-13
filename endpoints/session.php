@@ -80,7 +80,7 @@ function session_login()
 	// Check to see if the user already has any existing sessions.
 	// First, clean up old ones.
 	cleanSessions();
-	if ($GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]) {
+	if ($GLOBALS["CONFIG"]["SESSION"]["MAX_PER_KEY"]) {
 		// Grab the count.
 		try {
 			$statement = $db->prepare("SELECT COUNT(*) FROM `sessions` WHERE `key` = ?");
@@ -94,9 +94,9 @@ function session_login()
 			respond(500, false, translate("Unidentified database error."));
 		}
 
-		if ($sessionKeyTotal >= $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]) {
+		if ($sessionKeyTotal >= $GLOBALS["CONFIG"]["SESSION"]["MAX_PER_KEY"]) {
 			// The user has too many sessions with the current API key. Slow them down.
-			respond(429, false, translate("You already have at least {s} active session(s) with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one.", $GLOBALS["CONFIG"]["MAX_SESSIONS_PER_KEY"]));
+			respond(429, false, translate("You already have at least {s} active session(s) with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one.", $GLOBALS["CONFIG"]["SESSION"]["MAX_PER_KEY"]));
 		}
 	}
 
@@ -104,7 +104,7 @@ function session_login()
 	// Therefore, create a session for the user as requested.
 	createTransaction(translate("Unable to create new session."), __FUNCTION__);
 
-	$expiryTime = date("Y-m-d H:i:s", time() + ($GLOBALS["CONFIG"]["API_SESSION_LENGTH"] * 60));
+	$expiryTime = date("Y-m-d H:i:s", time() + ($GLOBALS["CONFIG"]["API"]["SESSION_LEN"] * 60));
 	$sessionToken = sha1(md5("$userID" . time() . "{$findKey["key"]}" . rand()));
 	try {
 		$statement = $db->prepare("INSERT INTO `sessions` (`key`, `expiry`, `token`) VALUES (?, ?, ?)");

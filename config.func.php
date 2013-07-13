@@ -5,8 +5,8 @@ if (!defined("MODE")) {
 
 /* error-check config entries */
 
-if (!empty($CONFIG["LOG_ACCESS"])) {
-	if (!is_dir($CONFIG["LOG_ACCESS"]) || !is_writable($CONFIG["LOG_ACCESS"])) {
+if (!empty($CONFIG["LOG"]["TYPES"]["ACCESS"])) {
+	if (!is_dir($CONFIG["LOG"]["TYPES"]["ACCESS"]) || !is_writable($CONFIG["LOG"]["TYPES"]["ACCESS"])) {
 		if (MODE == "CLI") {
 			echo translate("Critical access log file error.") . "\n";
 		}
@@ -14,8 +14,8 @@ if (!empty($CONFIG["LOG_ACCESS"])) {
 	}
 }
 
-if (!empty($CONFIG["LOG_ERROR"])) {
-	if (!is_dir($CONFIG["LOG_ERROR"]) || !is_writable($CONFIG["LOG_ERROR"])) {
+if (!empty($CONFIG["LOG"]["TYPES"]["ERROR"])) {
+	if (!is_dir($CONFIG["LOG"]["TYPES"]["ERROR"]) || !is_writable($CONFIG["LOG"]["TYPES"]["ERROR"])) {
 		if (MODE == "CLI") {
 			echo translate("Critical error log file error.") . "\n";
 		}
@@ -23,7 +23,7 @@ if (!empty($CONFIG["LOG_ERROR"])) {
 	}
 }
 
-if (!is_numeric($CONFIG["LOG_SIZE"]) || $CONFIG["LOG_SIZE"] < 0.5) {
+if (!is_numeric($CONFIG["LOG"]["SIZE"]) || $CONFIG["LOG"]["SIZE"] < 0.5) {
 	if (MODE == "CLI") {
 		echo translate("Critical log file error.") . "\n";
 	}
@@ -31,7 +31,7 @@ if (!is_numeric($CONFIG["LOG_SIZE"]) || $CONFIG["LOG_SIZE"] < 0.5) {
 }
 
 //TODO: see if this can be changed to zero once log rotation is in operation
-if (!is_numeric($CONFIG["LOG_MAX"]) || $CONFIG["LOG_MAX"] < 1) {
+if (!is_numeric($CONFIG["LOG"]["MAX"]) || $CONFIG["LOG"]["MAX"] < 1) {
 	if (MODE == "CLI") {
 		echo translate("Critical log file error.") . "\n";
 	}
@@ -65,17 +65,17 @@ function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 		$description = processPDOException($description);
 	}
 
-	$type = "LOG_" . strtoupper($logType);
-	if (!isset($CONFIG[$type])) {
+	$type = strtoupper($logType);
+	if (!isset($CONFIG["LOG"]["TYPES"][$type])) {
 		if (MODE == "CLI") {
 			echo translate("Critical log file error.") . "\n";
 		}
-		$descrip = "The specified log type ({$logType}) does not exist. The following information was supposed to be logged:\n";
+		$descrip = "The specified log type ({$type}) does not exist. The following information was supposed to be logged:\n";
 		$descrip .= "logRequestTime: {$logRequestTime}, statusCode: {$statusCode}, call: {$call}, description: {$description}";
 		logEntry("ERROR", "now", 500, "logEntry()", $descrip);
 		return;
 	}
-	if (empty($CONFIG[$type])) {
+	if (empty($CONFIG["LOG"]["TYPES"][$type])) {
 		return null;
 	}
 
@@ -89,8 +89,8 @@ function logRotate($logType)
 	global $CONFIG;
 
 	// If there is no existing log file, create one and finish.
-	$logFile = $CONFIG[$logType] . DIRECTORY_SEPARATOR . $logType . ".log";
-	if (!file_exists($CONFIG[$logType])) {
+	$logFile = $CONFIG["LOG"]["TYPES"][$logType] . DIRECTORY_SEPARATOR . $logType . ".log";
+	if (!file_exists($logFile])) {
 		file_put_contents($logFile, "");
 		return;
 	}
@@ -99,8 +99,8 @@ function logRotate($logType)
 	// If it is above the maximum size allowed for a log, we need to rotate it.
 	$logFileSize = filesize($logFile);
 	$maxLogFileSize = 5242880; // Default maximum size (in Bytes) allowed for a log.
-	if (!empty($CONFIG["LOG_SIZE"]) && is_numeric($CONFIG["LOG_SIZE"])) {
-		$maxLogFileSize = $CONFIG["LOG_SIZE"] * 1024 * 1024;
+	if (!empty($CONFIG["LOG"]["SIZE"]) && is_numeric($CONFIG["LOG"]["SIZE"])) {
+		$maxLogFileSize = $CONFIG["LOG"]["SIZE"] * 1024 * 1024;
 	}
 	if ($logFileSize > $maxLogFileSize) {
 		// Rotate the logs.
@@ -109,8 +109,8 @@ function logRotate($logType)
 		// No rotation required.
 		return;
 	}
-	if (!empty($CONFIG["LOG_MAX"]) && is_numeric($CONFIG["LOG_MAX"])) {
-		$maxLogs = $CONFIG["LOG_MAX"];
+	if (!empty($CONFIG["LOG"]["MAX"]) && is_numeric($CONFIG["LOG"]["MAX"])) {
+		$maxLogs = $CONFIG["LOG"]["MAX"];
 	}
 
 	// Perform the log rotation.
@@ -154,7 +154,7 @@ function logRotate($logType)
 
 function checkRequestTimeout($requestTime)
 {
-	$timeout = strtotime($requestTime) + ($GLOBALS["CONFIG"]["API_REQUEST_TIMEOUT"] * 60);
+	$timeout = strtotime($requestTime) + ($GLOBALS["CONFIG"]["API"]["REQUEST_TIMEOUT"] * 60);
 	if ($timeout > time()) {
 		return true; // Request has not timed out.
 	} else {

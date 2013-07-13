@@ -3,12 +3,12 @@ if (!defined("MODE")) {
 	exit("No direct script access allowed.");
 }
 
-if (empty($CONFIG) || empty($CONFIG["DB_HOST"]) || empty($CONFIG["DB_NAME"]) || empty($CONFIG["DB_USER"]) || empty($CONFIG["DB_PASS"])) {
+if (empty($CONFIG) || empty($CONFIG["DB"]["HOST"]) || empty($CONFIG["DB"]["NAME"]) || empty($CONFIG["DB"]["USER"]) || empty($CONFIG["DB"]["PASS"])) {
 	respond(503, false, translate("Unable to connect to database."));
 }
 
 try {
-	$db = new PDO('mysql:host=' . $CONFIG["DB_HOST"] . ';dbname=' . $CONFIG["DB_NAME"], $CONFIG["DB_USER"], $CONFIG["DB_PASS"]);
+	$db = new PDO('mysql:host=' . $CONFIG["DB"]["HOST"] . ';dbname=' . $CONFIG["DB"]["NAME"], $CONFIG["DB"]["USER"], $CONFIG["DB"]["PASS"]);
 } catch (PDOException $e) {
 	respond(503, false, translate("Unable to create database connection."));
 }
@@ -47,7 +47,7 @@ function verifySession()
 		respond(500, false, translate("Unidentified database error."));
 	}
 
-	$GLOBAL["EXPIRYTIME"] = date("Y-m-d H:i:s", time() + ($GLOBALS["CONFIG"]["API_SESSION_LENGTH"] * 60));
+	$GLOBAL["EXPIRYTIME"] = date("Y-m-d H:i:s", time() + ($GLOBALS["CONFIG"]["API"]["SESSION_LEN"] * 60));
 	try {
 		$statement = $db->prepare("UPDATE sessions SET expiry = ?, totalRequests = totalRequests + 1 WHERE token = ?");
 		$statement->bindParam(1, $GLOBAL["EXPIRYTIME"], PDO::PARAM_STR);

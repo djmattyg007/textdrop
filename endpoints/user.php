@@ -8,7 +8,7 @@ function user_search()
 {
 	if (empty($_POST["user"])) {
 		respond(400, false, translate("There was no username supplied with the request."));
-	} elseif (strlen($_POST["user"]) < $GLOBALS["CONFIG"]["MIN_SEARCH_LEN"]) {
+	} elseif (strlen($_POST["user"]) < $GLOBALS["CONFIG"]["USER"]["SEARCH"]["MIN_QUERY_LEN"]) {
 		respond(400, false, translate("The search query was not long enough."));
 	}
 	global $db, $GLOBAL;
@@ -30,7 +30,7 @@ function user_search()
 	try {
 		$statement = $db->prepare("SELECT `userID`, `username`, `displayname` FROM `users` WHERE `username` LIKE ? LIMIT ?");
 		$statement->bindParam(1, $username, PDO::PARAM_STR);
-		$statement->bindParam(2, $GLOBALS["CONFIG"]["MAX_SEARCH_RESULTS"], PDO::PARAM_INT);
+		$statement->bindParam(2, $GLOBALS["CONFIG"]["USER"]["SEARCH"]["MAX_RESULTS"], PDO::PARAM_INT);
 		$statement->execute();
 		$results = $statement->fetchAll(PDO::FETCH_ASSOC);
 		unset($statement);
