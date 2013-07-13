@@ -4,6 +4,7 @@ if (!defined("MODE")) {
 }
 
 $methodRegistry["user_search"] = true;
+//TODO: allow user to request less results than the maximum
 function user_search()
 {
 	if (empty($_POST["user"])) {

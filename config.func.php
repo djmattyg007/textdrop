@@ -50,9 +50,9 @@ function processPDOException(PDOException $e)
 }
 
 /**
- * Do not put a new line at the end of the description.
  * The logRequestTime should be the server time, not the time included in a request.
  * The statusCode variable should match what is sent to the client.
+ * The description variable should not have a new line at the end of it.
  */
 function logEntry($logType, $logRequestTime, $statusCode, $call, $description)
 {
