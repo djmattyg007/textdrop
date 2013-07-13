@@ -49,9 +49,10 @@ function dataf_archived($dataID)
 		respond(500, false, translate("Unidentified database error."));
 	}
 
-	//TODO: check to make sure archived isn't an integer that is less than zero or greater than one.
-	if ($archived == 1 || $archived == 0) {
+	if ($archived == 0 || $archived == 1) {
 		return $archived;
+	} elseif ($archived < 0 || $archived > 1) {
+		respondFatal();
 	} else {
 		return null;
 	}
