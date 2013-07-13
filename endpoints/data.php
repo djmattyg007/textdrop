@@ -136,10 +136,7 @@ function data_grab()
 		$statement->bindParam(2, $page, PDO::PARAM_INT);
 		$statement->bindParam(3, $limit, PDO::PARAM_INT);
 		$statement->execute();
-		$data = array();
-		while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-			$data[] = $row;
-		}
+		$data = $statement->fetchAll(PDO::FETCH_ASSOC);
 		unset($statement);
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
