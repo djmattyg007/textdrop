@@ -8,7 +8,7 @@ if (!defined("MODE")) {
 // by the supplied ID number. If the data does not exist, it returns null.
 function dataf_owner($dataID)
 {
-	if (!is_numeric($dataID) {
+	if (!is_numeric($dataID)) {
 		respondFatal();
 	}
 	global $db;
