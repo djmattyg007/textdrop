@@ -90,7 +90,7 @@ function logRotate($logType)
 
 	// If there is no existing log file, create one and finish.
 	$logFile = $CONFIG["LOG"]["TYPES"][$logType] . DIRECTORY_SEPARATOR . $logType . ".log";
-	if (!file_exists($logFile])) {
+	if (!file_exists($logFile)) {
 		file_put_contents($logFile, "");
 		return;
 	}
