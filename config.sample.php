@@ -21,6 +21,7 @@ $CONFIG["USER"] = array();
 $CONFIG["USER"]["SEARCH"] = array();
 $CONFIG["USER"]["SEARCH"]["MIN_QUERY_LEN"] = 2; // This shouldn't be set any lower than 1.
 $CONFIG["USER"]["SEARCH"]["MAX_RESULTS"] = 10;
+$CONFIG["USER"]["SEARCH"]["DEFAULT"] = 10;
 //TODO: allow the removal of the cap on results
 
 // It's up to the administrator to ensure max is greater than default.

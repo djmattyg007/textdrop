@@ -4,7 +4,6 @@ if (!defined("MODE")) {
 }
 
 $methodRegistry["user_search"] = true;
-//TODO: allow user to request less results than the maximum
 //TODO: username search should be case-insensitive
 function user_search()
 {
@@ -14,6 +13,28 @@ function user_search()
 		respond(400, false, translate("The search query was not long enough."));
 	}
 	global $db, $GLOBAL;
+
+	if (empty($_POST["limit"])) {
+		// If the client didn't supply a limit, use the default.
+		$limit = $GLOBALS["CONFIG"]["USER"]["SEARCH"]["DEFAULT"];
+	} elseif (!is_numeric($_POST["limit"])) {
+		// If the client didn't supply a numeric limit, tell them they made a mistake.
+		respond(400, false, translate("Invalid limit supplied with the request."));
+	} else {
+		$intLimit = intval($_POST["limit"]);
+		if ($intLimit > $GLOBALS["CONFIG"]["USER"]["SEARCH"]["MAX_RESULTS"]) {
+			// If the client wants more than the allowed maximum, give them the maximum and warn them.
+			$badLimit = true;
+			$limit = $GLOBALS["CONFIG"]["USER"]["SEARCH"]["MAX_RESULTS"];
+		} elseif ($intLimit < 1) {
+			// If the client wants less than one result, warn them and give them the default.
+			$badLimit = true;
+			$limit = $GLOBALS["CONFIG"]["USER"]["SEARCH"]["DEFAULT"];
+		} else {
+			$badLimit = false;
+			$limit = $intLimit;
+		}
+	}
 
 	if (empty($_POST["method"])) {
 		$method = "autocomplete";
@@ -32,7 +53,7 @@ function user_search()
 	try {
 		$statement = $db->prepare("SELECT `userID`, `username`, `displayname` FROM `users` WHERE `username` LIKE ? LIMIT ?");
 		$statement->bindParam(1, $username, PDO::PARAM_STR);
-		$statement->bindParam(2, $GLOBALS["CONFIG"]["USER"]["SEARCH"]["MAX_RESULTS"], PDO::PARAM_INT);
+		$statement->bindParam(2, $limit, PDO::PARAM_INT);
 		$statement->execute();
 		$results = $statement->fetchAll(PDO::FETCH_ASSOC);
 		unset($statement);
@@ -44,6 +65,9 @@ function user_search()
 	$response = array();
 	$response["request"] = array();
 	$response["request"]["results"] = $results;
+	if (isset($badLimit) && $badLimit == true) {
+		$response["request"]["warning"] = translate("The supplied limit was out of the allowed range.");
+	}
 	$response["session"] = array();
 	$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
 	respond(200, true, translate("Search results successfully retrieved."), $response);
