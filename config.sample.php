@@ -24,8 +24,8 @@ $CONFIG["USER"]["SEARCH"]["MAX_RESULTS"] = 10;
 //TODO: allow the removal of the cap on results
 
 // It's up to the administrator to ensure max is greater than default.
-$CONFIG["DATA_GET_MAX"] = 50;
-$CONFIG["DATA_GET_DEFAULT"] = 10;
+$CONFIG["DATA"]["GRAB"]["MAX"] = 50;
+$CONFIG["DATA"]["GRAB"]["DEFAULT"] = 10;
 
 $CONFIG["LOG"] = array();
 // Enter the directory to store the logs.

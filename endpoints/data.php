@@ -79,20 +79,20 @@ function data_grab()
 
 	if (empty($_POST["limit"])) {
 		// If the user didn't supply a limit, use the default.
-		$limit = $GLOBALS["CONFIG"]["DATA_GET_DEFAULT"];
+		$limit = $GLOBALS["CONFIG"]["DATA"]["GRAB"]["DEFAULT"];
 	} elseif (!is_numeric($_POST["limit"])) {
 		// If the user didn't supply a numeric limit, tell them they made a mistake.
 		respond(400, false, translate("Invalid limit supplied with the request."));
 	} else {
 		$intLimit = intval($_POST["limit"]);
-		if ($intLimit > $GLOBALS["CONFIG"]["DATA_GET_MAX"]) {
+		if ($intLimit > $GLOBALS["CONFIG"]["DATA"]["GRAB"]["MAX"]) {
 			// If the user wants more than the allowed maximum, give them the maximum and warn them.
 			$badLimit = true;
-			$limit = $GLOBALS["CONFIG"]["DATA_GET_MAX"];
+			$limit = $GLOBALS["CONFIG"]["DATA"]["GRAB"]["MAX"];
 		} elseif ($intLimit < 1) {
 			// If the user wants less than one data, warn them and give them the default.
 			$badLimit = true;
-			$limit = $GLOBALS["CONFIG"]["DATA_GET_DEFAULT"];
+			$limit = $GLOBALS["CONFIG"]["DATA"]["GRAB"]["DEFAULT"];
 		} else {
 			$badLimit = false;
 			$limit = $intLimit;
