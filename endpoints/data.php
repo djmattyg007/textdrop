@@ -207,10 +207,17 @@ function data_type()
 		respond(400, false, translate("Invalid data ID supplied with the request."));
 	}
 	global $db, $GLOBAL;
+	$dataID = intval($_POST["dataID"]);
+	if (dataf_owner($dataID) != $GLOBAL["CURUSER"]) {
+		// This check doesn't distinguish between the user attempting to access a data they don't own,
+		// and the data simply not existing. This doesn't matter, as the user shouldn't know the
+		// difference if they don't own it.
+		respond(403, false, translate("You don't have permission to see that data."));
+	}
 
 	try {
 		$statement = $db->prepare("SELECT `datatype` FROM `main_data` WHERE `id` = ?");
-		$statement->bindParam(1, intval($_POST["dataID"]), PDO::PARAM_INT);
+		$statement->bindParam(1, $dataID, PDO::PARAM_INT);
 		$statement->execute();
 		$datatype = $statement->fetch(PDO::FETCH_ASSOC);
 		unset($statement);
@@ -219,7 +226,7 @@ function data_type()
 		respond(500, false, translate("Unable to get the datatype for the selected data."));
 	}
 
-	if (!$data) {
+	if (!$datatype) {
 		respond(400, false, translate("There was no data matching the ID supplied with the request."));
 	}
 
