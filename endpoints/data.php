@@ -219,7 +219,7 @@ function data_type()
 		$statement = $db->prepare("SELECT `datatype` FROM `main_data` WHERE `id` = ?");
 		$statement->bindParam(1, $dataID, PDO::PARAM_INT);
 		$statement->execute();
-		$datatype = $statement->fetch(PDO::FETCH_ASSOC);
+		$datatype = $statement->fetchColumn();
 		unset($statement);
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
