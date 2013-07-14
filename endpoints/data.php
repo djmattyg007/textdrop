@@ -117,14 +117,14 @@ function data_grab()
 	}
 
 	// The summary can be turned off, but is on by default.
-	if ($_POST["summary"] === "off") {
+	if (!empty($_POST["summary"]) && $_POST["summary"] === "off") {
 		$summary = "";
 	} else {
 		$summary = ", `summary`";
 	}
 
 	// The text is off by default, but can be turned on.
-	if ($_POST["text"] === "on") {
+	if (!empty($_POST["text"]) && $_POST["text"] === "on") {
 		$text = ", `text`";
 	} else {
 		$text = "";
@@ -146,7 +146,7 @@ function data_grab()
 	$response = array();
 	$response["request"] = array();
 	$response["request"]["data"] = $data;
-	if ($badLimit) {
+	if (isset($badLimit) && $badLimit == true) {
 		$response["request"]["warning"] = translate("The supplied limit was out of the allowed range.");
 	}
 	$response["session"] = array();
