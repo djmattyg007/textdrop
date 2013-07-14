@@ -23,7 +23,7 @@ function data_send()
 	// Sanity-check the optional values.
 	if (empty($_POST["summary"])) {
 		$data["summary"] = "";
-	} elseif (is_numeric($GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"] && $GOBALS["CONFIG"]["MAX_SUMMARY_LEN"] > 0 && strlen($_POST["summary"]) > $GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"]) {
+	} elseif (is_numeric($GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"]) && $GOBALS["CONFIG"]["MAX_SUMMARY_LEN"] > 0 && strlen($_POST["summary"]) > $GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"]) {
 		unset($data);
 		respond(400, false, translate("The summary cannot be longer than {s} characters.", $GLOBALS["CONFIG"]["MAX_SUMMARY_LEN"]));
 	} else {
@@ -159,10 +159,10 @@ $methodRegistry["data_get"] = true;
 //TODO: add friendships
 function data_get()
 {
-	if (empty($_POST["dataID"]) {
+	if (empty($_POST["dataID"])) {
 		respond(400, false, translate("There was no data ID supplied with the request."));
 	}
-	if (!is_numeric($_POST["dataID"]) {
+	if (!is_numeric($_POST["dataID"])) {
 		respond(400, false, translate("Invalid data ID supplied with the request."));
 	}
 	global $db, $GLOBAL;
@@ -200,10 +200,10 @@ function data_get()
 $methodRegistry["data_type"] = true;
 function data_type()
 {
-	if (empty($_POST["dataID"]) {
+	if (empty($_POST["dataID"])) {
 		respond(400, false, translate("There was no data ID supplied with the request."));
 	}
-	if (!is_numeric($_POST["dataID"]) {
+	if (!is_numeric($_POST["dataID"])) {
 		respond(400, false, translate("Invalid data ID supplied with the request."));
 	}
 	global $db, $GLOBAL;
@@ -234,10 +234,10 @@ function data_type()
 $methodRegistry["data_archive"] = true;
 function data_archive()
 {
-	if (empty($_POST["dataID"]) {
+	if (empty($_POST["dataID"])) {
 		respond(400, false, translate("There was no data ID supplied with the request."));
 	}
-	if (!is_numeric($_POST["dataID"]) {
+	if (!is_numeric($_POST["dataID"])) {
 		respond(400, false, translate("Invalid data ID supplied with the request."));
 	}
 	global $db, $GLOBAL;
@@ -286,10 +286,10 @@ function data_archive()
 $methodRegistry["data_unarchive"] = true;
 function data_unarchive()
 {
-	if (empty($_POST["dataID"]) {
+	if (empty($_POST["dataID"])) {
 		respond(400, false, translate("There was no data ID supplied with the request."));
 	}
-	if (!is_numeric($_POST["dataID"]) {
+	if (!is_numeric($_POST["dataID"])) {
 		respond(400, false, translate("Invalid data ID supplied with the request."));
 	}
 	global $db, $GLOBAL;
