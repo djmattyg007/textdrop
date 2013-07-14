@@ -42,7 +42,7 @@
 	"Unable to get the selected data." : "Unable to get the selected data.",
 	"There was no data matching the ID supplied with the request." : "There was no data matching the ID supplied with the request.",
 	"Datatype for requested data successfully retrieved." : "Datatype for requested data successfully retrieved.",
-	"Running build script {s}", "Running build script {s}",
-	"Finished build script {s}", "Finished build script {s}",
+	"Running build script {s}" : "Running build script {s}",
+	"Finished build script {s}" : "Finished build script {s}",
 	"You don't have permission to see that data." : "You don't have permission to see that data."
 }
