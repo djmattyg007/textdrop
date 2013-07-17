@@ -73,3 +73,43 @@ function user_search()
 	respond(200, true, translate("Search results successfully retrieved."), $response);
 }
 
+$methodRegistry["user_get"] = true;
+//TODO: username search should be case-insensitive
+function user_get()
+{
+	if (empty($_POST["user"])) {
+		respond(400, false, translate("There was no username supplied with the request."));
+	}
+	global $db, $GLOBAL;
+
+	if (is_numeric($_POST["user"])) {
+		$where = "userID";
+		$whereType = PDO::PARAM_INT;
+	} else {
+		$where = "username";
+		$whereType = PDO::PARAM_STR;
+	}
+
+	try {
+		$statement = $db->prepare("SELECT `userID`, `username`, `displayname` FROM `users` WHERE `{$where}` = ?");
+		$statement->bindParam(1, $_POST["user"], $whereType);
+		$statement->execute();
+		$user = $statement->fetch(PDO::FETCH_ASSOC);
+		unset($statement);
+	} catch (PDOException $e) {
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
+		respond(500, false, translate("Unable to grab the requested user."));
+	}
+
+	if (!$user) {
+		respond(400, false, translate("Unable to find the requested user."));
+	}
+
+	$response = array();
+	$response["request"] = array();
+	$response["request"]["user"] = $user;
+	$response["session"] = array();
+	$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
+	respond(200, true, translate("Requested user successfully retrieved."), $response);
+}
+
