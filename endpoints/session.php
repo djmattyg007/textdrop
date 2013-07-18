@@ -81,6 +81,7 @@ function session_login()
 	// Check to see if the user already has any existing sessions.
 	// First, clean up old ones.
 	cleanSessions();
+	// Check the number of active sessions for the supplied API key.
 	if ($GLOBALS["CONFIG"]["SESSION"]["MAX_PER_KEY"]) {
 		// Grab the count.
 		try {
@@ -98,6 +99,24 @@ function session_login()
 		if ($sessionKeyTotal >= $GLOBALS["CONFIG"]["SESSION"]["MAX_PER_KEY"]) {
 			// The user has too many sessions with the current API key. Slow them down.
 			respond(429, false, translate("You already have at least {s} active session(s) with this API key. Please wait a few minutes for one of your existing sessions to expire before creating a new one.", $GLOBALS["CONFIG"]["SESSION"]["MAX_PER_KEY"]));
+		}
+	}
+	// Check the number of active sessions for all the user's API keys.
+	if ($GLOBALS["CONFIG"]["SESSION"]["MAX_PER_USER"]) {
+		try {
+			$statement = $db->prepare("SELECT COUNT(*) FROM `sessions`, `api_keys` WHERE `sessions`.`key` = `api_keys`.`keyID` AND `api_keys`.`owner` = ?");
+			$statement->bindParam(1, $userID, PDO::PARAM_INT);
+			$statement->execute();
+			$sessionUserTotal = $statement->fetchColumn();
+			unset($statement);
+		} catch (PDOException $e) {
+			logEntry("ERROR", "now", 500, __FUNCTION__, $e);
+			respond(500, false, translate("Unidentified database error."));
+		}
+
+		if ($sessionUserTotal >= $GLOBALS["CONFIG"]["SESSION"]["MAX_PER_USER"]) {
+			// The user has too many sessions with the current API key. Slow them down.
+			respond(429, false, translate("You already have at least {s} active session(s). Please wait a few minutes for one of your existing sessions to expire before creating a new one.", $GLOBALS["CONFIG"]["SESSION"]["MAX_PER_KEY"]));
 		}
 	}
 

@@ -14,8 +14,8 @@ $CONFIG["MAX_SUMMARY_LEN"] = 1000;
 
 $CONFIG["SESSION"] = array();
 // Set these to zero or null to remove the limit.
-$CONFIG["SESSION"]["MAX_PER_USER"] = 10;
 $CONFIG["SESSION"]["MAX_PER_KEY"] = 3;
+$CONFIG["SESSION"]["MAX_PER_USER"] = 10;
 
 $CONFIG["USER"] = array();
 $CONFIG["USER"]["SEARCH"] = array();
