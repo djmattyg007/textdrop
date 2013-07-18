@@ -5,7 +5,6 @@ if (!defined("MODE")) {
 
 $methodRegistry["session_login"] = false;
 //TODO: usernames should be case-insensitive
-//TODO: check for number of active sessions per user
 //TODO: record log of transactions
 //TODO: create access and error logs
 function session_login()
