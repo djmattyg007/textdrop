@@ -38,8 +38,7 @@ function data_send()
 	if (empty($_POST["sendTo"])) {
 		$data["sendTo"] = null;
 	} else {
-		$data["sendTo"] = null;
-		//check sendTo ID to make sure it exists
+		$data["sendTo"] = helper("user", "userf_exists", $_POST["sendTo"], false);
 	}
 
 	createTransaction(translate("Unable to save submitted data."), __FUNCTION__);
