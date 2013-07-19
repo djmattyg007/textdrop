@@ -162,3 +162,9 @@ function checkRequestTimeout($requestTime)
 	}
 }
 
+function helper($class, $function)
+{
+	require_once("functions" . DIRECTORY_SEPARATOR . $class . ".php");
+	return call_user_func_array($function, array_slice(func_get_args(), 2));
+}
+
