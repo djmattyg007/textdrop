@@ -4,7 +4,6 @@ if (!defined("MODE")) {
 }
 
 $methodRegistry["user_search"] = true;
-//TODO: username search should be case-insensitive
 function user_search()
 {
 	if (empty($_POST["user"])) {
@@ -74,7 +73,6 @@ function user_search()
 }
 
 $methodRegistry["user_get"] = true;
-//TODO: username search should be case-insensitive
 function user_get()
 {
 	if (empty($_POST["user"])) {
