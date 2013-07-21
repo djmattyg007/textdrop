@@ -16,7 +16,7 @@ function session_login()
 
 	// Check to see if the username and password exist and match.
 	try {
-		$statement = $db->prepare("SELECT userID, active FROM users WHERE username = ? AND password = ?");
+		$statement = $db->prepare("SELECT `userID`, `active` FROM `users` WHERE `username` = ? AND `password` = ?");
 		$statement->bindParam(1, $_POST["username"], PDO::PARAM_STR);
 		$statement->bindParam(2, $_POST["password"], PDO::PARAM_STR);
 		$statement->execute();
@@ -139,7 +139,7 @@ function session_login()
 	}
 
 	try {
-		$statement = $db->prepare("UPDATE users SET lastLogin = UTC_TIMESTAMP() WHERE userID = ?");
+		$statement = $db->prepare("UPDATE `users` SET `lastLogin` = UTC_TIMESTAMP() WHERE `userID` = ?");
 		$statement->bindParam(1, $userID, PDO::PARAM_INT);
 		$statement->execute();
 		unset($statement);
@@ -168,7 +168,7 @@ function session_logout()
 	createTransaction("default", __FUNCTION__);
 
 	try {
-		$statement = $db->prepare("DELETE FROM sessions WHERE token = ?");
+		$statement = $db->prepare("DELETE FROM `sessions` WHERE `token` = ?");
 		$statement->bindParam(1, $_POST["token"], PDO::PARAM_STR);
 		$statement->execute();
 		unset($statement);
