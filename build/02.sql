@@ -1,9 +1,9 @@
 CREATE TABLE friendships (
 	`user1` SMALLINT UNSIGNED NOT NULL,
 	`user2` SMALLINT UNSIGNED NOT NULL,
-	`status` TINYINT UNSIGNED NOT NULL,
+	`status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
 	CONSTRAINT friendshipsPK PRIMARY KEY (`user1`, `user2`),
-	CONSTRAINT statusCode CHECK `status` IN (1, 2),
+	CONSTRAINT statusCode CHECK `status` IN (0, 1),
 	CONSTRAINT userOrder CHECK `user1` < `user2`,
 	FOREIGN KEY(`user1`) REFERENCES users(`userID`) ON DELETE CASCADE,
 	FOREIGN KEY(`user2`) REFERENCES users(`userID`) ON DELETE CASCADE
