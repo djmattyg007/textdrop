@@ -42,3 +42,38 @@ function userf_exists($userID, $fullUser = false)
 	}
 }
 
+function userf_isfriend($userA, $userB)
+{
+	if (!is_numeric($userA) || !is_numeric($userB)) {
+		respondFatal();
+	}
+	$uA = intval($userA);
+	$uB = intval($userB);
+	if ($userA == $userB) {
+		return false;
+	} elseif ($uA > $uB) {
+		$temp = $uA;
+		$uA = $uB;
+		$uB = $temp;
+	}
+	global $db;
+
+	try {
+		$statement = $db->prepare("SELECT `status` FROM `friendships` WHERE `user1` = ? AND `user2` = ?");
+		$statement->bindParam(1, $uA, PDO::PARAM_INT);
+		$statement->bindParam(2, $uB, PDO::PARAM_INT);
+		$statement->execute();
+		$status = $statement->fetchColumn();
+		unset($statement);
+	} catch (PDOException $e) {
+		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
+		respond(500, false, translate("Unidentified database error."));
+	}
+
+	if ($status) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
