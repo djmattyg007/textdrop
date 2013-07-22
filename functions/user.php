@@ -6,8 +6,6 @@ if (!defined("MODE")) {
 
 function userf_exists($userID, $fullUser = false)
 {
-	global $db, $GLOBAL;
-
 	if (is_numeric($_POST["user"])) {
 		if (intval($_POST["user"]) <= 0) {
 			return null;
@@ -18,6 +16,7 @@ function userf_exists($userID, $fullUser = false)
 		$where = "username";
 		$whereType = PDO::PARAM_STR;
 	}
+	global $db;
 
 	if ($fullUser) {
 		$select = "`userID`, `username`, `displayname`";
