@@ -94,3 +94,26 @@ function user_get()
 	respond(200, true, translate("Requested user successfully retrieved."), $response);
 }
 
+$methodRegistry["user_isfriend"] = true;
+function user_isfriend()
+{
+	if (empty($_POST["user"])) {
+		respond(400, false, translate("There was no username supplied with the request."));
+	}
+
+	$user = userf_exists($_POST["user"], false);
+	if (!$user) {
+		respond(400, false, translate("Unable to find the requested user."));
+	}
+	global $GLOBAL;
+
+	$friendship = userf_isfriend($user, $GLOBAL["CURUSER"]);
+
+	$response = array();
+	$response["request"] = array();
+	$response["request"]["friendship"] = $friendship;
+	$response["session"] = array();
+	$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
+	respond(200, true, translate("Friendship status successfully retrieved."), $response);
+}
+
