@@ -21,6 +21,7 @@ if (!$translation) {
 
 function translate($str, $val = null)
 {
+	global $translation;
 	if (isset($translation->{"$str"})) {
 		$string = $translation->{"$str"};
 	} else {
