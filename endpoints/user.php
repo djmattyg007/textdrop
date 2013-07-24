@@ -3,6 +3,13 @@ if (!defined("MODE")) {
 	exit("No direct script access allowed.");
 }
 
+/**
+ * Required
+ * @var user (string): a (partial) username
+ * Optional
+ * @var limit (int): the maximum number of results to be returned
+ * @var method (string): the search method to be used
+ */
 $methodRegistry["user_search"] = true;
 function user_search()
 {
@@ -72,6 +79,10 @@ function user_search()
 	respond(200, true, translate("Search results successfully retrieved."), $response);
 }
 
+/**
+ * Required
+ * @var user (string/int): a complete ID representing the user whose details are being requested
+ */
 $methodRegistry["user_get"] = true;
 function user_get()
 {
@@ -94,6 +105,10 @@ function user_get()
 	respond(200, true, translate("Requested user successfully retrieved."), $response);
 }
 
+/**
+ * Required
+ * @var user (string/int): a complete ID representing a user whose friendship status with the requestor is being determined
+ */
 $methodRegistry["user_isfriend"] = true;
 function user_isfriend()
 {
