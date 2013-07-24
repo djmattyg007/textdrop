@@ -19,6 +19,7 @@ function user_search()
 		respond(400, false, translate("The search query was not long enough."));
 	}
 	global $db, $GLOBAL;
+	$methods = array("autocomplete", "fuzzy");
 
 	if (empty($_POST["limit"])) {
 		// If the client didn't supply a limit, use the default.
@@ -44,7 +45,7 @@ function user_search()
 
 	if (empty($_POST["method"])) {
 		$method = "autocomplete";
-	} elseif ($_POST["method"] != "autocomplete" && $_POST["method"] != "fuzzy") {
+	} elseif (!in_array($_POST["method"], $methods) {
 		respond(400, false, translate("Invalid search method supplied with the request."));
 	} else {
 		$method = $_POST["method"];
