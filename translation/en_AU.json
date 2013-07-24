@@ -44,5 +44,13 @@
 	"Datatype for requested data successfully retrieved." : "Datatype for requested data successfully retrieved.",
 	"Running build script {s}" : "Running build script {s}",
 	"Finished build script {s}" : "Finished build script {s}",
-	"You don't have permission to see that data." : "You don't have permission to see that data."
+	"You don't have permission to see that data." : "You don't have permission to see that data.",
+	"There was no username supplied with the request." : "There was no username supplied with the request.",
+	"The search query was not long enough." : "The search query was not long enough.",
+	"Invalid search method supplied with the request." : "Invalid search method supplied with the request.",
+	"Unable to grab the requested list of users." : "Unable to grab the requested list of users.",
+	"Search results successfully retrieved." : "Search results successfully retrieved.",
+	"There was no user ID supplied with the request." : "There was no user ID supplied with the request.",
+	"Unable to find the requested user." : "Unable to find the requested user.",
+	"Friendship status successfully retrieved." : "Friendship status successfully retrieved."
 }

@@ -98,7 +98,7 @@ $methodRegistry["user_isfriend"] = true;
 function user_isfriend()
 {
 	if (empty($_POST["user"])) {
-		respond(400, false, translate("There was no username supplied with the request."));
+		respond(400, false, translate("There was no user ID supplied with the request."));
 	}
 
 	$user = userf_exists($_POST["user"], false);
