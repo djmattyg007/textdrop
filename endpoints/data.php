@@ -3,6 +3,16 @@ if (!defined("MODE")) {
 	exit("No direct script access allowed.");
 }
 
+/**
+ * Required
+ * @var datatype (string): the type of data being posted to the server
+ * @var subject (string): the main subject line for the data
+ * @var createdAt (string): a UTC timestamp of when the data was created
+ * Optional
+ * @var summary (string): a summary, possibly of the main text of the data
+ * @var text (string): the actual content of the data
+ * @var sendTo (int): the ID of a user to send a paste to
+ */
 $methodRegistry["data_send"] = true;
 function data_send()
 {
@@ -71,6 +81,13 @@ function data_send()
 	respond(200, true, translate("Submitted data saved successfully."), $response);
 }
 
+/**
+ * Optional
+ * @var limit (int): the number of pieces of data to be returned
+ * @var page (int): used for pagination of the returned data list
+ * @var summary (string): set to off to disable selection of the summary field for all returned data
+ * @var text (string): set to on to enable selection of the main text field for all returned data
+ */
 $methodRegistry["data_grab"] = true;
 function data_grab()
 {
