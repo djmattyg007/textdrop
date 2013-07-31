@@ -7,7 +7,7 @@ $dataf = null;
 
 // Draw an entire data into memory and cache it. This reduces the number of
 // requests to the database.
-function draw($dataID)
+function dataf_draw($dataID)
 {
 	if (!is_numeric($dataID)) {
 		respondFatal();
@@ -44,7 +44,7 @@ function dataf_owner($dataID)
 		respondFatal();
 	}
 
-	if (draw($dataID)) {
+	if (dataf_draw($dataID)) {
 		return $GLOBALS["dataf"][$dataID]["owner"];
 	} else {
 		return null;
@@ -57,7 +57,7 @@ function dataf_archived($dataID)
 		respondFatal();
 	}
 
-	if (draw($dataID)) {
+	if (dataf_draw($dataID)) {
 		return $GLOBALS["dataf"][$dataID]["archived"];
 	} else {
 		return null;
