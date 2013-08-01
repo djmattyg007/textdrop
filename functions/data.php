@@ -12,7 +12,7 @@ function dataf_draw($dataID)
 	if (!is_numeric($dataID)) {
 		respondFatal();
 	}
-	$global $db;
+	global $db;
 
 	try {
 		$statement = $db->prepare("SELECT * FROM `main_data` WHERE `id` = ?");
