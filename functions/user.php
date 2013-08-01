@@ -55,6 +55,7 @@ function userf_isfriend($userA, $userB)
 		$temp = $uA;
 		$uA = $uB;
 		$uB = $temp;
+		unset($temp);
 	}
 	global $db;
 
