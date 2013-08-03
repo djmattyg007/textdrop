@@ -69,3 +69,19 @@ function dataf_archived($dataID)
 	}
 }
 
+define("DATA_VISIBILITY_PRIVATE", 0);
+define("DATA_VISIBILITY_FRIENDS", 1);
+define("DATA_VISIBILITY_PUBLIC", 2);
+function dataf_visibility($dataID)
+{
+	if (!is_numeric($dataID)) {
+		respondFatal();
+	}
+
+	if (dataf_draw($dataID)) {
+		return $GLOBALS["dataf"][$dataID]["visibility"];
+	} else {
+		return null;
+	}
+}
+
