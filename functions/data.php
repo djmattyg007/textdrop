@@ -54,6 +54,8 @@ function dataf_owner($dataID)
 	}
 }
 
+define("DATA_ARCHIVE_NO", 0);
+define("DATA_ARCHIVE_YES", 1);
 function dataf_archived($dataID)
 {
 	if (!is_numeric($dataID)) {

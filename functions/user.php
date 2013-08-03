@@ -57,6 +57,8 @@ function userf_exists($userID, $fullUser = false)
 	}
 }
 
+define("USER_FRIENDSHIP_INACTIVE", 0);
+define("USER_FRIENDSHIP_ACTIVE", 1);
 function userf_isfriend($userA, $userB)
 {
 	if (!is_numeric($userA) || !is_numeric($userB)) {
