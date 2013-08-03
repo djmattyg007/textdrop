@@ -12,6 +12,9 @@ function dataf_draw($dataID)
 	if (!is_numeric($dataID)) {
 		respondFatal();
 	}
+	if (!empty($GLOBALS["dataf"][$dataID]) {
+		return true;
+	}
 	global $db;
 
 	try {
