@@ -183,27 +183,21 @@ function data_get()
 	}
 	global $db, $GLOBAL;
 	$dataID = intval($_POST["dataID"]);
-	if (dataf_owner($dataID) != $GLOBAL["CURUSER"]) {
-		// This check doesn't distinguish between the user attempting to access a data they don't own,
-		// and the data simply not existing. This doesn't matter, as the user shouldn't know the
-		// difference if they don't own it.
-		respond(403, false, translate("You don't have permission to see that data."));
-	}
-
-	try {
-		$statement = $db->prepare("SELECT `dateRecorded`, `datatype`, `subject`, `summary`, `text`, `owner`, `sendTo` FROM `main_data` WHERE `id` = ?");
-		$statement->bindParam(1, $dataID, PDO::PARAM_INT);
-		$statement->execute();
-		$data = $statement->fetch(PDO::FETCH_ASSOC);
-		unset($statement);
-	} catch (PDOException $e) {
-		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
-		respond(500, false, translate("Unable to get the selected data."));
-	}
-
-	if (!$data) {
+	if (!dataf_draw($dataID)) {
 		respond(400, false, translate("There was no data matching the ID supplied with the request."));
 	}
+	if (dataf_owner($dataID) != $GLOBAL["CURUSER"]) {
+		if (dataf_visibility($dataID) === constant("DATA_VISIBILITY_PRIVATE")) {
+			respond(403, false, translate("You don't have permission to see that data."));
+		} elseif (dataf_visibility($dataID) === constant("DATA_VISIBILITY_FRIENDS")) {
+			if (helper("user", "userf_isfriend", dataf_owner($dataID), $GLOBAL["CURUSER"]) !== true) {
+				respond(403, false, translate("You don't have permission to see that data."));
+			}
+		}
+	}
+
+	$data = $GLOBALS["dataf"][$dataID];
+	unset($data["attachment"]);
 
 	$response = array();
 	$response["request"] = array();
