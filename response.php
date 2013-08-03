@@ -16,12 +16,8 @@ function respond($statusCode, $successful, $message, $payload = null)
 		respondFatal();
 	}
 	// The payload must be an array.
-	if ($payload === null) {
-		$payload = array();
-	} else {
-		if (!is_array($payload)) {
-			respondFatal();
-		}
+	if ($payload !== null && !is_array($payload)) {
+		respondFatal();
 	}
 
 	$response = array();
