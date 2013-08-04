@@ -114,7 +114,7 @@ function session_login()
 
 		if ($sessionUserTotal >= $GLOBALS["CONFIG"]["SESSION"]["MAX_PER_USER"]) {
 			// The user has too many sessions with the current API key. Slow them down.
-			respond(429, false, translate("You already have at least {s} active session(s). Please wait a few minutes for one of your existing sessions to expire before creating a new one.", $GLOBALS["CONFIG"]["SESSION"]["MAX_PER_KEY"]));
+			respond(429, false, translate("You already have at least {s} active session(s). Please wait a few minutes for one of your existing sessions to expire before creating a new one.", $GLOBALS["CONFIG"]["SESSION"]["MAX_PER_USER"]));
 		}
 	}
 
@@ -157,7 +157,7 @@ function session_login()
 	$response["session"]["token"] = $sessionToken;
 	$response["session"]["active"] = array();
 	$response["session"]["active"]["key"] = ($sessionKeyTotal + 1);
-	$response["session"]["active"]["user"] = (count($findKey["all"]) + 1);
+	$response["session"]["active"]["user"] = ($sessionUserTotal + 1);
 	respond(200, true, translate("New session created successfully."), $response);
 }
 
