@@ -171,7 +171,6 @@ function data_grab()
 }
 
 $methodRegistry["data_get"] = true;
-//TODO: add public/private attribute of data
 //TODO: add friendships
 function data_get()
 {
