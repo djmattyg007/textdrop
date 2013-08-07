@@ -180,11 +180,12 @@ function data_get()
 	if (!is_numeric($_POST["dataID"])) {
 		respond(400, false, translate("Invalid data ID supplied with the request."));
 	}
-	global $db, $GLOBAL;
 	$dataID = intval($_POST["dataID"]);
 	if (!dataf_draw($dataID)) {
 		respond(400, false, translate("There was no data matching the ID supplied with the request."));
 	}
+
+	global $GLOBAL;
 	if (dataf_owner($dataID) != $GLOBAL["CURUSER"]) {
 		if (dataf_visibility($dataID) === constant("DATA_VISIBILITY_PRIVATE")) {
 			respond(403, false, translate("You don't have permission to see that data."));
