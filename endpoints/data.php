@@ -195,6 +195,7 @@ function data_get()
 		}
 	}
 
+	// Makes a copy of the resulting array
 	$data = $GLOBALS["dataf"][$dataID];
 	unset($data["attachment"]);
 
