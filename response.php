@@ -3,6 +3,7 @@ if (!defined("MODE")) {
 	exit("No direct script access allowed.");
 }
 
+//TODO: Move session response (such as expiry time) in here
 function respond($statusCode, $successful, $message, $payload = null)
 {
 	// Error check the provided variables.
