@@ -36,3 +36,16 @@ function tagf_draw($tagID)
 	}
 }
 
+function tagf_exists($tagID, $fullTag = false)
+{
+	if (tagf_draw($tagID)) {
+		if ($fullTag) {
+			return $GLOBALS["tagf"][$tagID];
+		} else {
+			return $GLOBALS["tagf"][$tagID]["tagID"];
+		}
+	} else {
+		return null;
+	}
+}
+
