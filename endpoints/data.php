@@ -11,7 +11,8 @@ if (!defined("MODE")) {
  * Optional
  * @var summary (string): a summary, possibly of the main text of the data
  * @var text (string): the actual content of the data
- * @var sendTo (int): the ID of a user to send a paste to
+ * @var sendTo (int): the ID of a user to send a piece of data to
+ * @var tag (int): the ID of a tag to include with the data
  */
 $methodRegistry["data_send"] = true;
 function data_send()
@@ -50,11 +51,16 @@ function data_send()
 	} else {
 		$data["sendTo"] = helper("user", "userf_exists", $_POST["sendTo"], false);
 	}
+	if (empty($_POST["tag"])) {
+		$data["tag"] = null;
+	} else {
+		$data["tag"] = helper("tag", "tagf_exists", $_POST["tag"], false);
+	}
 
 	createTransaction(translate("Unable to save submitted data."), __FUNCTION__);
 
 	try {
-		$statement = $db->prepare("INSERT INTO `main_data` (`dateRecorded`, `datatype`, `subject`, `summary`, `text`, `owner`, `sendTo`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+		$statement = $db->prepare("INSERT INTO `main_data` (`dateRecorded`, `datatype`, `subject`, `summary`, `text`, `owner`, `sendTo`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		$statement->bindParam(1, $data["dateRecorded"], PDO::PARAM_STR);
 		$statement->bindParam(2, $data["datatype"], PDO::PARAM_STR);
 		$statement->bindParam(3, $data["subject"], PDO::PARAM_STR);
@@ -62,6 +68,7 @@ function data_send()
 		$statement->bindParam(5, $data["text"], PDO::PARAM_STR);
 		$statement->bindParam(6, $data["owner"], PDO::PARAM_INT);
 		$statement->bindParam(7, $data["sendTo"], PDO::PARAM_INT);
+		$statement->bindParam)8, $data["tag"], PDO::PARAM_INT);
 		$statement->execute();
 		$dataID = $db->lastInsertId();
 		unset($statement);
