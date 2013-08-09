@@ -23,6 +23,6 @@ function tag_get()
 	$response["request"]["tag"] = $GLOBALS["tagf"][$tagID];
 	$response["session"] = array();
 	$response["session"]["expiryTime"] = $GLOBAL["EXPIRYTIME"];
-	respond(200, true, translate("Requested data successfully retrieved."), $response);
+	respond(200, true, translate("Requested tag successfully retrieved."), $response);
 }
 

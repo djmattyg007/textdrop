@@ -52,5 +52,9 @@
 	"Search results successfully retrieved." : "Search results successfully retrieved.",
 	"There was no user ID supplied with the request." : "There was no user ID supplied with the request.",
 	"Unable to find the requested user." : "Unable to find the requested user.",
-	"Friendship status successfully retrieved." : "Friendship status successfully retrieved."
+	"Friendship status successfully retrieved." : "Friendship status successfully retrieved.",
+	"There was no tag ID supplied with the request." : "There was no tag ID supplied with the request.",
+	"Invalid tag ID supplied with the request." : "Invalid tag ID supplied with the request.",
+	"There was no tag matching the ID supplied with the request." : "There was no tag matching the ID supplied with the request.",
+	"Requested tag successfully retrieved." : "Requested tag successfully retrieved."
 }
