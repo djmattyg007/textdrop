@@ -67,7 +67,7 @@ function user_search()
 		unset($statement);
 	} catch (PDOException $e) {
 		logEntry("ERROR", "now", 500, __FUNCTION__, $e);
-		respond(500, false, translate("Unable to grab the requested list of users."));
+		respond(500, false, translate("Unable to grab a list of users."));
 	}
 
 	$response = array();
