@@ -4,7 +4,6 @@ if (!defined("MODE")) {
 }
 
 $methodRegistry["tag_get"] = true;
-//TODO: add friendships
 function tag_get()
 {
 	if (empty($_POST["tagID"])) {
