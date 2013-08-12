@@ -24,6 +24,7 @@ function user_search()
 	if (empty($_POST["limit"])) {
 		// If the client didn't supply a limit, use the default.
 		$limit = $GLOBALS["CONFIG"]["USER"]["SEARCH"]["DEFAULT"];
+		$badLimit = false;
 	} elseif (!is_numeric($_POST["limit"])) {
 		// If the client didn't supply a numeric limit, tell them they made a mistake.
 		respond(400, false, translate("Invalid limit supplied with the request."));
@@ -72,7 +73,7 @@ function user_search()
 	$response = array();
 	$response["request"] = array();
 	$response["request"]["results"] = $results;
-	if (isset($badLimit) && $badLimit == true) {
+	if ($badLimit == true) {
 		$response["request"]["warning"] = translate("The supplied limit was out of the allowed range.");
 	}
 	$response["session"] = array();
