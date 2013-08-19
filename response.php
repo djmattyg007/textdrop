@@ -34,20 +34,8 @@ function respond($statusCode, $successful, $message, $payload = null)
 	$response["payload"] = $payload;
 
 	http_response_code($statusCode);
-
-	$responseMsg = "";
-	if (MODE === "API") {
-		header("Content-Type: application/json");
-		$responseMsg .= json_encode($response);
-	} else if (MODE === "WEB") {
-		$responseMsg .= "<h2>Status: " . $response["response"]["status"] . "</h2>\n";
-		$responseMsg .= "<h2>Success: " . $response["response"]["successful"] . "</h2>\n";
-		$responseMsg .= "<h2>Created at: " . $response["response"]["createdAt"] . "</h2>\n";
-		$responseMsg .= "<h2>Message:</h2><h3>" . $response["response"]["message"] . "</h3>\n\n";
-		$responseMsg .= "Payload:\n<pre>" . $print_r($response["payload"], true) . "</pre>";
-	}
-
-	exit($responseMsg);
+	header("Content-Type: application/json");
+	exit(json_encode($response));
 }
 
 function respondFatal()
