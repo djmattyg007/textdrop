@@ -3,6 +3,7 @@ if (!defined("MODE")) {
 	exit("No direct script access allowed.");
 }
 
+//TODO: segmentation of config settings
 $CONFIG = array();
 
 $CONFIG["APP"] = array();
@@ -54,6 +55,10 @@ $CONFIG["API"] = array();
 // Enter values in minutes
 $CONFIG["API"]["SESSION_LEN"] = 5;
 $CONFIG["API"]["REQUEST_TIMEOUT"] = 2;
+
+$CONFIG["CRON"] = array();
+// The maximum number of tasks to execute each time the cron script is called.
+$CONFIG["CRON"]["MAX_TASKS"] = 5;
 
 srand(time());
 
