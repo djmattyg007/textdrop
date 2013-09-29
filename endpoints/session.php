@@ -16,9 +16,8 @@ function session_login()
 
 	// Check to see if the username and password exist and match.
 	try {
-		$statement = $db->prepare("SELECT `userID`, `active` FROM `users` WHERE `username` = ? AND `password` = ?");
+		$statement = $db->prepare("SELECT `userID`, `active`, `password` FROM `users` WHERE `username` = ?");
 		$statement->bindParam(1, $_POST["username"], PDO::PARAM_STR);
-		$statement->bindParam(2, $_POST["password"], PDO::PARAM_STR);
 		$statement->execute();
 		$userDetail = $statement->fetch(PDO::FETCH_BOTH);
 		unset($statement);
@@ -28,11 +27,16 @@ function session_login()
 	}
 
 	// Make sure the user exists and is active.
-	if (isset($userDetail["userID"]) && isset($userDetail["active"]) && intval($userDetail["active"]) === 1) {
+	if (isset($userDetail["userID"]) && isset($userDetail["active"]) && intval($userDetail["active"]) === 1 && isset($userDetail["password"])) {
 		$userID = intval($userDetail["userID"]);
 		unset($userDetail);
 	} else {
 		// Do not inform the client the selected user may be inactive.
+		respond(401, false, translate("Incorrect username or password."));
+	}
+
+	// Verify the password supplied with the request.
+	if (!password_verify($_POST["password"], $userDetail["password"]))  {
 		respond(401, false, translate("Incorrect username or password."));
 	}
 
